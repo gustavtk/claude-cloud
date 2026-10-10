@@ -174,7 +174,7 @@ body{background:#f7f9fc}
 .rl{font-family:Mono;font-size:16px;letter-spacing:.22em;color:var(--muted);margin-top:10px}
 .ct{right:80px;top:72px;padding:24px 34px;text-align:right}
 .c{font-size:25px;color:var(--ink2);line-height:1.7;font-weight:500}
-.wm{right:80px;bottom:72px}
+.wm{right:56px;bottom:48px}
 </style>
 <div class="abs field">
   <i style="left:-160px;top:-260px;width:900px;height:640px;background:rgb(16 185 129/.30)"></i>
@@ -184,7 +184,7 @@ body{background:#f7f9fc}
 </div>
 <div class="abs fade"></div><div class="abs wash"></div>
 <div class="abs grid"></div>
-<div class="abs wm"><svg viewBox="0 0 449 346" style="height:400px;display:block" aria-hidden>
+<div class="abs wm"><svg viewBox="0 0 449 346" style="height:580px;display:block" aria-hidden>
   <defs><linearGradient id="wg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0f766e" stop-opacity=".1"/><stop offset="1" stop-color="#0e7490" stop-opacity=".07"/></linearGradient></defs>
   <path fill="url(#wg)" d="M90 0h188.5v66H112l-39 39v95l17 17h91v67.5H65L0 219.5V90z"/>
   <path fill="url(#wg)" d="M114 103.5h264.5V170h-106v176h-39l-33-33V170H114z"/>
