@@ -196,17 +196,17 @@ body{background:#f7f9fc}
 <div class="abs pill ct">${contact("c")}</div>`,
 
   // 6. Soft blur: a real room thrown far out of focus, the way a camera's background blur leaves
-  // it: light walls, a bright doorway, a dark shape at the edge, camera grain. The mark sits on the
+  // it: ash-grey walls, a bright doorway, a dark shape at the edge, camera grain. The mark sits on the
   // wall as an out-of-focus sign, and the details stay sharp on frosted cards.
   "06-soft-blur": `
 <style>
-body{background:#e6e2dc}
+body{background:#b9b9b7}
 .room{inset:-160px;filter:blur(70px)}
 .room i{position:absolute;display:block;border-radius:40px}
 .sign{right:170px;top:430px;filter:blur(8px);opacity:.5}
-.vig{inset:0;background:radial-gradient(ellipse 75% 70% at 52% 48%,transparent 50%,rgb(60 52 44/.16))}
+.vig{inset:0;background:radial-gradient(ellipse 75% 70% at 52% 48%,transparent 45%,rgb(40 42 46/.22))}
 .grain{inset:0;opacity:.07;mix-blend-mode:multiply}
-.pill{background:rgb(255 255 255/.72);border:1px solid rgb(255 255 255/.9);box-shadow:0 18px 40px -22px rgb(30 25 20/.35),inset 0 1px 0 #fff;backdrop-filter:blur(16px);border-radius:28px}
+.pill{background:rgb(255 255 255/.8);border:1px solid rgb(255 255 255/.9);box-shadow:0 18px 40px -22px rgb(20 22 26/.45),inset 0 1px 0 #fff;backdrop-filter:blur(16px);border-radius:28px}
 .id{left:80px;top:72px;display:flex;align-items:center;gap:28px;padding:26px 40px 26px 30px}
 .nm{font-size:66px;font-weight:800;letter-spacing:-.03em;line-height:1}
 .rl{font-family:Mono;font-size:16px;letter-spacing:.22em;color:var(--muted);margin-top:10px}
@@ -214,20 +214,20 @@ body{background:#e6e2dc}
 .c{font-size:25px;color:var(--ink2);line-height:1.7;font-weight:500}
 </style>
 <div class="abs room">
-  <i style="inset:0;border-radius:0;background:linear-gradient(100deg,#d9d4cd 0%,#e7e3dd 35%,#ece9e4 60%,#e4e0da 100%)"></i>
-  <i style="left:0;right:0;top:0;height:300px;border-radius:0;background:linear-gradient(#cdc7bf,transparent)"></i>
-  <i style="left:0;right:0;bottom:0;height:380px;border-radius:0;background:linear-gradient(transparent,#d3cdc5)"></i>
-  <i style="left:40px;top:560px;width:380px;height:760px;background:#7a6f64;opacity:.6"></i>
-  <i style="left:160px;top:420px;width:200px;height:300px;background:#8c8176;opacity:.35"></i>
-  <i style="left:1260px;top:380px;width:380px;height:820px;background:#f9f8f6"></i>
-  <i style="left:1320px;top:440px;width:240px;height:700px;background:#ffffff"></i>
-  <i style="left:1660px;top:420px;width:70px;height:800px;background:#c9c2b8;opacity:.6"></i>
-  <i style="left:1940px;top:420px;width:300px;height:420px;background:#c7b391;opacity:.55"></i>
-  <i style="left:620px;top:200px;width:520px;height:420px;border-radius:50%;background:#efece7;opacity:.7"></i>
+  <i style="inset:0;border-radius:0;background:linear-gradient(100deg,#a9a9a7 0%,#bcbcba 35%,#c3c3c2 60%,#b6b6b4 100%)"></i>
+  <i style="left:0;right:0;top:0;height:300px;border-radius:0;background:linear-gradient(#9a9b9b,transparent)"></i>
+  <i style="left:0;right:0;bottom:0;height:380px;border-radius:0;background:linear-gradient(transparent,#a6a6a4)"></i>
+  <i style="left:40px;top:560px;width:380px;height:760px;background:#3e3833;opacity:.7"></i>
+  <i style="left:160px;top:420px;width:200px;height:300px;background:#5a534d;opacity:.35"></i>
+  <i style="left:1260px;top:380px;width:380px;height:820px;background:#d3d6da"></i>
+  <i style="left:1320px;top:440px;width:240px;height:700px;background:#dde0e4"></i>
+  <i style="left:1660px;top:420px;width:70px;height:800px;background:#9e9e9d;opacity:.6"></i>
+  <i style="left:1940px;top:420px;width:300px;height:420px;background:#9c8c74;opacity:.5"></i>
+  <i style="left:620px;top:200px;width:520px;height:420px;border-radius:50%;background:#c8c8c7;opacity:.6"></i>
 </div>
 <div class="abs sign"><svg viewBox="0 0 449 346" style="height:170px;display:block" aria-hidden>
-  <path fill="#55636a" d="M90 0h188.5v66H112l-39 39v95l17 17h91v67.5H65L0 219.5V90z"/>
-  <path fill="#55636a" d="M114 103.5h264.5V170h-106v176h-39l-33-33V170H114z"/>
+  <path fill="#4a5258" d="M90 0h188.5v66H112l-39 39v95l17 17h91v67.5H65L0 219.5V90z"/>
+  <path fill="#4a5258" d="M114 103.5h264.5V170h-106v176h-39l-33-33V170H114z"/>
   <path fill="#0d9488" d="M294 202.5h12.5l56 56-56 56H294v-24l32-32-32-32z"/><path fill="#0d9488" d="M356 290.5h92.5v24H356z"/></svg></div>
 <div class="abs vig"></div>
 <svg class="abs grain" width="1920" height="1080"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
