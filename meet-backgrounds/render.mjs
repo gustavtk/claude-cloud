@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 
 const OUT = process.argv[2];
 mkdirSync(OUT, { recursive: true });
-const fs = (p) => "file://" + resolve("node_modules/@fontsource", p);
+const fs = (p) => "file://" + resolve(process.env.FONTS_DIR ?? "node_modules/@fontsource", p);
 
 const EMAIL = "gustav@gustavtk.com";
 const SITE = "gustavtk.com";
@@ -43,83 +43,56 @@ body{font-family:Jakarta;color:var(--ink);position:relative;-webkit-font-smoothi
 .p{color:var(--teal)}
 `;
 
+// Every layout: logo, name and role top left; email and website top right; the middle stays clear.
+const contact = (cls = "") => `
+  <div class="${cls} mono"><span class="p">@</span> ${EMAIL}</div>
+  <div class="${cls} mono"><span class="p">↗</span> ${SITE}</div>`;
+
 const variants = {
-  // 1. Clean grid: the site's grid background, inverted to light, with a soft teal glow.
+  // 1. Grid studio: the site's grid background, inverted to light, with soft teal glows.
   "01-grid-studio": `
 <style>
 body{background:#f8fafc}
 .grid{inset:0;background-size:48px 48px;background-image:linear-gradient(to right,rgb(15 23 42/.05) 1px,transparent 1px),linear-gradient(to bottom,rgb(15 23 42/.05) 1px,transparent 1px);
   -webkit-mask-image:radial-gradient(ellipse 80% 90% at 50% 50%,#000 30%,transparent 100%)}
-.glow1{right:-260px;top:-300px;width:1100px;height:900px;background:radial-gradient(closest-side,rgb(1 240 201/.22),transparent)}
-.glow2{left:-300px;bottom:-400px;width:1000px;height:900px;background:radial-gradient(closest-side,rgb(6 182 212/.12),transparent)}
-.id{right:96px;top:84px;text-align:right;display:flex;flex-direction:column;align-items:flex-end}
+.glow1{left:-300px;top:-320px;width:1100px;height:900px;background:radial-gradient(closest-side,rgb(1 240 201/.22),transparent)}
+.glow2{right:-300px;top:-380px;width:900px;height:800px;background:radial-gradient(closest-side,rgb(6 182 212/.12),transparent)}
+.glow3{right:-300px;bottom:-420px;width:1000px;height:900px;background:radial-gradient(closest-side,rgb(16 185 129/.08),transparent)}
+.id{left:96px;top:84px}
 .name{font-size:76px;font-weight:800;letter-spacing:-.03em;line-height:1;margin-top:26px}
-.role{font-size:18px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-top:14px;font-family:Mono;font-weight:500}
-.rule{width:56px;height:3px;background:linear-gradient(90deg,var(--cyan),var(--em));margin:28px 0 24px}
+.role{font-size:18px;letter-spacing:.24em;color:var(--muted);margin-top:14px;font-family:Mono;font-weight:500}
+.rule{width:56px;height:3px;background:linear-gradient(90deg,var(--cyan),var(--em));margin-top:24px}
+.ct{right:96px;top:92px;text-align:right}
 .c{font-size:27px;color:var(--ink2);line-height:1.65;font-weight:500}
-.foot{left:96px;bottom:72px;font-size:16px;color:#94a3b8;letter-spacing:.18em}
+.foot{right:96px;bottom:72px;font-size:16px;color:#94a3b8;letter-spacing:.18em}
 </style>
-<div class="abs grid"></div><div class="abs glow1"></div><div class="abs glow2"></div>
-<div class="abs id">${mark(78)}
-  <div class="name">Gustav</div>
-  <div class="role">Web Developer</div>
-  <div class="rule"></div>
-  <div class="c mono"><span class="p">@</span> ${EMAIL}</div>
-  <div class="c mono"><span class="p">↗</span> ${SITE}</div>
-</div>
+<div class="abs grid"></div><div class="abs glow1"></div><div class="abs glow2"></div><div class="abs glow3"></div>
+<div class="abs id">${mark(78)}<div class="name">Gustav</div><div class="role">WEB DEVELOPER</div><div class="rule"></div></div>
+<div class="abs ct">${contact("c")}</div>
 <div class="abs foot mono">&gt; STATUS: ONLINE</div>`,
 
-  // 2. Terminal: the hero's window chrome and boot lines, as a light shell session.
-  "02-terminal": `
+  // 2. Access pass: the hero's lanyard badge, now hanging top left; contact pinned top right.
+  "02-access-pass": `
 <style>
-body{background:#f3f5f8}
-.fine{inset:0;background-size:18px 18px;background-image:linear-gradient(to right,rgb(15 23 42/.035) 1px,transparent 1px),linear-gradient(to bottom,rgb(15 23 42/.035) 1px,transparent 1px)}
-.bar{left:0;right:0;top:0;height:58px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 28px;font-size:17px;color:var(--muted)}
-.dots{display:flex;gap:10px}.dots i{width:14px;height:14px;border-radius:50%;display:block}
-.title{position:absolute;left:0;right:0;text-align:center}
-.pill{margin-left:auto;display:flex;align-items:center;gap:10px;border:1px solid rgb(16 185 129/.45);background:rgb(16 185 129/.08);color:#047857;border-radius:99px;padding:6px 16px;font-size:15px}
-.pill b{width:9px;height:9px;border-radius:50%;background:var(--em);box-shadow:0 0 0 4px rgb(16 185 129/.18)}
-.sh{right:96px;top:128px;width:600px;font-size:24px;line-height:1.55}
-.cmd{color:var(--muted)}.cmd .p{font-weight:700}
-.out{color:var(--ink2);margin:2px 0 22px;font-weight:500}
-.big{font-family:Jakarta;font-size:84px;font-weight:800;letter-spacing:-.03em;color:var(--ink);line-height:1.1;display:flex;align-items:center;gap:14px}
-.cur{width:16px;height:64px;background:var(--cyan);display:inline-block}
-.wm{left:-60px;bottom:-120px;opacity:.035}
-</style>
-<div class="abs fine"></div>
-<div class="abs bar mono"><span class="dots"><i style="background:#f87171"></i><i style="background:#fbbf24"></i><i style="background:#34d399"></i></span>
-  <span class="title">gustav@gustavtk: ~</span><span class="pill"><b></b>available for work</span></div>
-<div class="abs wm">${mark(620, "#0b0f14", "#0b0f14")}</div>
-<div class="abs sh mono">
-  <div class="cmd"><span class="p">&gt;</span> whoami</div>
-  <div class="big">Gustav<span class="cur"></span></div>
-  <div class="out" style="color:var(--muted);font-size:20px;letter-spacing:.12em;margin-top:6px">WEB_DEVELOPER</div>
-  <div class="cmd"><span class="p">&gt;</span> contact --email</div>
-  <div class="out">${EMAIL}</div>
-  <div class="cmd"><span class="p">&gt;</span> open</div>
-  <div class="out">https://${SITE}</div>
-</div>`,
-
-  // 3. Access pass: the hero's lanyard badge, hanging in the top-right corner.
-  "03-access-pass": `
-<style>
-body{background:radial-gradient(ellipse 70% 80% at 80% 10%,#ffffff,#eef2f5)}
-.dotsbg{inset:0;background-image:radial-gradient(rgb(15 23 42/.08) 1.2px,transparent 1.2px);background-size:30px 30px;-webkit-mask-image:linear-gradient(200deg,#000,transparent 70%)}
-.strap{right:316px;top:-10px;width:36px;height:150px;background:repeating-linear-gradient(0deg,#0e7490 0 9px,#06b6d4 9px 12px);border-radius:0 0 4px 4px}
-.clip{right:306px;top:128px;width:56px;height:30px;border-radius:6px;background:linear-gradient(#cbd5e1,#94a3b8);box-shadow:inset 0 -3px 0 rgb(0 0 0/.12)}
-.card{right:144px;top:150px;width:400px;border-radius:22px;background:#fff;box-shadow:0 30px 60px -20px rgb(15 23 42/.28),0 0 0 1px rgb(15 23 42/.06);overflow:hidden;transform:rotate(-3deg);transform-origin:50% 0}
+body{background:radial-gradient(ellipse 70% 80% at 20% 10%,#ffffff,#eef2f5)}
+.dotsbg{inset:0;background-image:radial-gradient(rgb(15 23 42/.08) 1.2px,transparent 1.2px);background-size:30px 30px;-webkit-mask-image:linear-gradient(160deg,#000,transparent 70%)}
+.strap{left:316px;top:-10px;width:36px;height:150px;background:repeating-linear-gradient(0deg,#0e7490 0 9px,#06b6d4 9px 12px);border-radius:0 0 4px 4px}
+.clip{left:306px;top:128px;width:56px;height:30px;border-radius:6px;background:linear-gradient(#cbd5e1,#94a3b8);box-shadow:inset 0 -3px 0 rgb(0 0 0/.12)}
+.card{left:134px;top:150px;width:400px;border-radius:22px;background:#fff;box-shadow:0 30px 60px -20px rgb(15 23 42/.28),0 0 0 1px rgb(15 23 42/.06);overflow:hidden;transform:rotate(3deg);transform-origin:50% 0}
 .slot{width:70px;height:12px;border-radius:6px;background:#e2e8f0;margin:18px auto 0}
 .head{background:#0b0f14;margin:18px 18px 0;border-radius:14px;padding:26px 26px 22px;display:flex;justify-content:space-between;align-items:flex-end}
 .head small{font-family:Mono;color:#94a3b8;font-size:13px;letter-spacing:.2em;line-height:1.6;text-align:right}
 .head small b{color:var(--mint);font-weight:500}
 .body{padding:26px 30px 28px}
 .lbl{font-family:Mono;font-size:12px;letter-spacing:.22em;color:#94a3b8}
-.nm{font-size:58px;font-weight:800;letter-spacing:-.03em;line-height:1.05;margin:4px 0 2px}
-.rl{font-size:18px;color:var(--teal);font-weight:700}
-.kv{margin-top:20px;font-family:Mono;font-size:19px;color:var(--ink2);line-height:1.7}
-.bc{height:44px;margin-top:22px;background:repeating-linear-gradient(90deg,#0b0f14 0 2px,transparent 2px 3px,#0b0f14 3px 4px,transparent 4px 7px,#0b0f14 7px 8px,transparent 8px 9px,#0b0f14 9px 12px,transparent 12px 14px)}
+.nm{font-size:62px;font-weight:800;letter-spacing:-.03em;line-height:1.05;margin:4px 0 4px}
+.rl{font-size:20px;color:var(--teal);font-weight:700}
+.bc{height:44px;margin-top:26px;background:repeating-linear-gradient(90deg,#0b0f14 0 2px,transparent 2px 3px,#0b0f14 3px 4px,transparent 4px 7px,#0b0f14 7px 8px,transparent 8px 9px,#0b0f14 9px 12px,transparent 12px 14px)}
 .ac{display:flex;justify-content:space-between;font-family:Mono;font-size:12px;color:#94a3b8;letter-spacing:.2em;margin-top:8px}
 .ac b{color:var(--em);font-weight:700}
+.ct{right:96px;top:92px;text-align:right}
+.ct .lb{font-family:Mono;font-size:15px;letter-spacing:.24em;color:#94a3b8;margin-bottom:12px}
+.c{font-size:27px;color:var(--ink2);line-height:1.65;font-weight:500}
 </style>
 <div class="abs dotsbg"></div>
 <div class="abs strap"></div><div class="abs clip"></div>
@@ -127,62 +100,88 @@ body{background:radial-gradient(ellipse 70% 80% at 80% 10%,#ffffff,#eef2f5)}
   <div class="head">${mark(70, "#fafafa", "#01f0c9")}<small>ACCESS PASS<br><b>GUSTAV_TK</b></small></div>
   <div class="body">
     <div class="lbl">NAME</div><div class="nm">Gustav</div><div class="rl">Web Developer</div>
-    <div class="kv"><span class="p">@</span> ${EMAIL}<br><span class="p">↗</span> ${SITE}</div>
     <div class="bc"></div><div class="ac"><span>ID · GTK-001</span><b>● ACCESS GRANTED</b></div>
-  </div></div>`,
+  </div></div>
+<div class="abs ct"><div class="lb">// CONTACT</div>${contact("c")}</div>`,
 
-  // 4. Monogram: the mark drawn as a huge teal outline, bleeding off the bottom-left.
-  "04-monogram": `
+  // 3. Browser: a light browser window; the tab holds the brand, the address bar the contact.
+  "03-browser": `
 <style>
-body{background:linear-gradient(135deg,#ffffff 0%,#f6faf9 50%,#e9f7f4 100%)}
-.big{left:-160px;bottom:-260px;opacity:.55}
-.big2{left:-120px;bottom:-230px;opacity:.25}
-.id{right:100px;top:96px;display:flex;gap:30px;align-items:stretch}
-.vr{width:3px;border-radius:2px;background:linear-gradient(var(--cyan),var(--em))}
-.t{display:flex;flex-direction:column;justify-content:center}
-.nm{font-size:88px;font-weight:800;letter-spacing:-.04em;line-height:.95}
-.nm .p{color:var(--teal)}
-.rl{font-family:Mono;font-size:18px;letter-spacing:.26em;color:var(--muted);margin:16px 0 26px}
-.c{font-family:Mono;font-size:26px;color:var(--ink2);line-height:1.6;font-weight:500}
-.small{right:100px;bottom:80px}
+body{background:linear-gradient(180deg,#f1f5f9,#f8fafc 40%,#ffffff)}
+.chrome{left:0;right:0;top:0;height:196px;background:#e9eef3;border-bottom:1px solid #d7dee6}
+.dots{left:36px;top:30px;display:flex;gap:12px}.dots i{width:16px;height:16px;border-radius:50%;display:block}
+.tab{left:28px;top:66px;height:130px;padding:0 44px 0 30px;background:#fff;border-radius:18px 18px 0 0;display:flex;align-items:center;gap:26px;box-shadow:0 -1px 0 #d7dee6}
+.tab .nm{font-size:58px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.tab .rl{font-family:Mono;font-size:16px;letter-spacing:.24em;color:var(--muted);margin-top:10px}
+.tab .x{font-family:Mono;color:#94a3b8;font-size:22px;margin-left:30px}
+.tab2{left:560px;top:96px;height:100px;width:180px;border-radius:14px 14px 0 0;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:30px;font-family:Mono}
+.url{right:36px;top:34px;width:760px;height:62px;background:#fff;border:1px solid #d7dee6;border-radius:999px;display:flex;align-items:center;padding:0 26px;gap:14px;font-size:25px;color:var(--ink2)}
+.url .lock{color:var(--em)}
+.url .h{color:#94a3b8}
+.mail{right:36px;top:116px;height:52px;display:flex;align-items:center;gap:12px;font-size:24px;color:var(--ink2);background:rgb(13 148 136/.08);border:1px solid rgb(13 148 136/.25);border-radius:12px;padding:0 20px}
+.page{left:0;right:0;top:196px;bottom:0;background-size:40px 40px;background-image:linear-gradient(to right,rgb(15 23 42/.035) 1px,transparent 1px),linear-gradient(to bottom,rgb(15 23 42/.035) 1px,transparent 1px);-webkit-mask-image:linear-gradient(#000,transparent 80%)}
+.load{left:28px;top:194px;width:420px;height:3px;background:linear-gradient(90deg,var(--cyan),var(--em))}
 </style>
-<div class="abs big">${markOutline(900, "#14b8a6", 1.2)}</div>
-<div class="abs big2">${markOutline(900, "#06b6d4", 0.8)}</div>
-<div class="abs id"><div class="vr"></div><div class="t">
-  <div class="nm">Gustav<span class="p">.</span></div>
-  <div class="rl">WEB DEVELOPER</div>
-  <div class="c">${EMAIL}</div><div class="c">${SITE}</div></div></div>
-<div class="abs small">${mark(40, "#0b0f14", "var(--teal)")}</div>`,
+<div class="abs chrome"></div><div class="abs page"></div>
+<div class="abs dots"><i style="background:#f87171"></i><i style="background:#fbbf24"></i><i style="background:#34d399"></i></div>
+<div class="abs tab">${mark(64)}<div><div class="nm">Gustav</div><div class="rl">WEB DEVELOPER</div></div><span class="x">×</span></div>
+<div class="abs tab2">+</div>
+<div class="abs load"></div>
+<div class="abs url mono"><span class="lock">●</span><span><span class="h">https://</span>${SITE}</span></div>
+<div class="abs mail mono"><span class="p">@</span> ${EMAIL}</div>`,
 
-  // 5. Orbit: the hero's dashed rings, centred on the top-right corner around the details.
-  "05-orbit": `
+  // 4. Code: the contact written as a typed object in a small light editor card.
+  "04-code": `
 <style>
-body{background:radial-gradient(circle at 100% 0%,#ecfeff 0%,#f8fafc 45%,#ffffff 100%)}
-.ring{border-radius:50%;border:1.5px dashed rgb(6 182 212/.5);transform:translate(50%,-50%);right:0;top:0}
-.ring.s{border-style:solid;border-color:rgb(15 23 42/.1)}
-.dot{width:14px;height:14px;border-radius:50%}
-.id{right:110px;top:100px;text-align:right;display:flex;flex-direction:column;align-items:flex-end}
-.nm{font-size:80px;font-weight:800;letter-spacing:-.03em;line-height:1;margin-top:28px}
-.rl{font-family:Mono;font-size:18px;letter-spacing:.24em;color:var(--muted);margin:14px 0 28px}
-.chip{font-family:Mono;font-size:24px;color:var(--ink2);background:rgb(255 255 255/.8);border:1px solid var(--line);border-radius:999px;padding:10px 22px;margin-top:12px;font-weight:500;backdrop-filter:blur(6px)}
-.cloud{left:120px;top:120px;opacity:.5}
+body{background:#fbfcfd}
+.dg{inset:0;background-image:radial-gradient(rgb(15 23 42/.09) 1.2px,transparent 1.2px);background-size:28px 28px;-webkit-mask-image:radial-gradient(ellipse 60% 70% at 50% 45%,transparent 30%,#000 100%)}
+.glow{left:-260px;top:-300px;width:1000px;height:800px;background:radial-gradient(closest-side,rgb(1 240 201/.18),transparent)}
+.id{left:96px;top:88px;display:flex;align-items:center;gap:30px}
+.nm{font-size:80px;font-weight:800;letter-spacing:-.035em;line-height:1}
+.nm .cur{display:inline-block;width:14px;height:62px;background:var(--cyan);margin-left:10px;vertical-align:-4px}
+.rl{font-family:Mono;font-size:18px;letter-spacing:.24em;color:var(--muted);margin-top:12px}
+.vr{width:2px;height:120px;background:linear-gradient(var(--cyan),var(--em))}
+.ed{right:96px;top:80px;width:620px;background:#fff;border-radius:16px;border:1px solid var(--line);box-shadow:0 24px 50px -24px rgb(15 23 42/.22);overflow:hidden}
+.eh{height:46px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 20px;gap:9px;font-family:Mono;font-size:15px;color:#94a3b8}
+.eh i{width:11px;height:11px;border-radius:50%;display:block;background:#e2e8f0}
+.eh span{margin-left:auto}
+pre{font-family:Mono;font-size:23px;line-height:1.7;padding:20px 26px 24px;color:var(--ink2)}
+.ln{color:#cbd5e1;display:inline-block;width:34px}
+.k{color:#7c3aed}.s{color:var(--teal);font-weight:500}.pr{color:#0369a1}
 </style>
-<div class="abs ring" style="width:1000px;height:1000px"></div>
-<div class="abs ring s" style="width:1500px;height:1500px"></div>
-<div class="abs ring" style="width:2100px;height:2100px;border-color:rgb(16 185 129/.38)"></div>
-<div class="abs dot" style="right:463px;top:164px;background:var(--cyan);box-shadow:0 0 0 8px rgb(6 182 212/.14)"></div>
-<div class="abs dot" style="right:370px;top:645px;width:10px;height:10px;background:var(--em)"></div>
-<div class="abs dot" style="right:1008px;top:266px;width:12px;height:12px;background:var(--teal);box-shadow:0 0 0 6px rgb(13 148 136/.14)"></div>
-<div class="abs dot" style="right:610px;top:426px;width:8px;height:8px;background:#94a3b8"></div>
-<svg class="abs cloud" width="120" viewBox="0 0 64 44"><path fill="rgb(125 211 252/.15)" stroke="rgb(56 189 248/.7)" stroke-width="1.5" d="M18 38a12 12 0 0 1-1.6-23.9A16 16 0 0 1 47 12.2a13 13 0 1 1 2 25.8H18z"/></svg>
-<div class="abs id">${mark(76)}
-  <div class="nm">Gustav</div><div class="rl">WEB DEVELOPER</div>
-  <div class="chip"><span class="p">@</span> ${EMAIL}</div>
-  <div class="chip"><span class="p">↗</span> ${SITE}</div></div>`,
+<div class="abs dg"></div><div class="abs glow"></div>
+<div class="abs id">${mark(104)}<div class="vr"></div><div><div class="nm">Gustav<span class="cur"></span></div><div class="rl">WEB DEVELOPER</div></div></div>
+<div class="abs ed"><div class="eh"><i></i><i></i><i></i><span>contact.ts</span></div>
+<pre><span class="ln">1</span><span class="k">export const</span> contact = {
+<span class="ln">2</span>  <span class="pr">email</span>: <span class="s">"${EMAIL}"</span>,
+<span class="ln">3</span>  <span class="pr">site</span>:  <span class="s">"${SITE}"</span>,
+<span class="ln">4</span>};</pre></div>`,
+
+  // 5. Glass: soft teal/cyan aurora at the foot, frosted pills holding the details.
+  "05-glass": `
+<style>
+body{background:#f7fafc;overflow:hidden}
+.blob{border-radius:50%;filter:blur(110px)}
+.pill{background:rgb(255 255 255/.62);border:1px solid rgb(255 255 255/.9);box-shadow:0 18px 40px -22px rgb(15 23 42/.25),inset 0 1px 0 #fff;backdrop-filter:blur(18px);border-radius:28px}
+.id{left:80px;top:72px;display:flex;align-items:center;gap:28px;padding:26px 40px 26px 30px}
+.nm{font-size:66px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.rl{font-family:Mono;font-size:16px;letter-spacing:.24em;color:var(--muted);margin-top:10px}
+.ct{right:80px;top:72px;padding:24px 34px;text-align:right}
+.c{font-size:25px;color:var(--ink2);line-height:1.7;font-weight:500}
+.lines{left:0;right:0;bottom:0;height:520px;opacity:.5;background:repeating-linear-gradient(0deg,rgb(255 255 255/.55) 0 1px,transparent 1px 26px);-webkit-mask-image:linear-gradient(transparent,#000)}
+</style>
+<div class="abs blob" style="left:-120px;bottom:-360px;width:900px;height:640px;background:#5eead4;opacity:.55"></div>
+<div class="abs blob" style="left:620px;bottom:-420px;width:900px;height:620px;background:#67e8f9;opacity:.45"></div>
+<div class="abs blob" style="right:-200px;bottom:-320px;width:800px;height:600px;background:#6ee7b7;opacity:.4"></div>
+<div class="abs blob" style="left:-200px;top:-260px;width:700px;height:500px;background:#ccfbf1;opacity:.9"></div>
+<div class="abs lines"></div>
+<div class="abs pill id">${mark(76)}<div><div class="nm">Gustav</div><div class="rl">WEB DEVELOPER</div></div></div>
+<div class="abs pill ct">${contact("c")}</div>`,
 };
 
-const browser = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium-1194/chrome-linux/chrome" });
+const browser = await chromium.launch({ executablePath: process.env.CHROME ?? "/opt/pw-browsers/chromium-1194/chrome-linux/chrome" });
 const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
+mkdirSync(resolve(OUT, "mirrored"), { recursive: true });
 for (const [name, body] of Object.entries(variants)) {
   for (const mirrored of [false, true]) {
     const flip = mirrored ? "html{transform:scaleX(-1)}" : "";
