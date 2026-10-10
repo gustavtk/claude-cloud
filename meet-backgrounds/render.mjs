@@ -203,7 +203,7 @@ body{background:#f7f9fc}
 body{background:#b9b9b7}
 .room{inset:-160px;filter:blur(70px)}
 .room i{position:absolute;display:block;border-radius:40px}
-.sign{right:170px;top:430px;filter:blur(8px);opacity:.5}
+.sign{right:100px;top:380px;filter:blur(10px);opacity:.28}
 .vig{inset:0;background:radial-gradient(ellipse 75% 70% at 52% 48%,transparent 45%,rgb(40 42 46/.22))}
 .grain{inset:0;opacity:.07;mix-blend-mode:multiply}
 .pill{background:rgb(255 255 255/.8);border:1px solid rgb(255 255 255/.9);box-shadow:0 18px 40px -22px rgb(20 22 26/.45),inset 0 1px 0 #fff;backdrop-filter:blur(16px);border-radius:28px}
@@ -225,7 +225,7 @@ body{background:#b9b9b7}
   <i style="left:1940px;top:420px;width:300px;height:420px;background:#9c8c74;opacity:.5"></i>
   <i style="left:620px;top:200px;width:520px;height:420px;border-radius:50%;background:#c8c8c7;opacity:.6"></i>
 </div>
-<div class="abs sign"><svg viewBox="0 0 449 346" style="height:170px;display:block" aria-hidden>
+<div class="abs sign"><svg viewBox="0 0 449 346" style="height:330px;display:block" aria-hidden>
   <path fill="#4a5258" d="M90 0h188.5v66H112l-39 39v95l17 17h91v67.5H65L0 219.5V90z"/>
   <path fill="#4a5258" d="M114 103.5h264.5V170h-106v176h-39l-33-33V170H114z"/>
   <path fill="#0d9488" d="M294 202.5h12.5l56 56-56 56H294v-24l32-32-32-32z"/><path fill="#0d9488" d="M356 290.5h92.5v24H356z"/></svg></div>
