@@ -1,10 +1,14 @@
 import { chromium } from "playwright";
 import { mkdirSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const OUT = process.argv[2];
 mkdirSync(OUT, { recursive: true });
 const fs = (p) => "file://" + resolve(process.env.FONTS_DIR ?? "node_modules/@fontsource", p);
+
+// Photos used as backgrounds live next to this script in assets/.
+const ASSETS = resolve(dirname(fileURLToPath(import.meta.url)), "assets");
 
 const EMAIL = "gustav@gustavtk.com";
 const SITE = "gustavtk.com";
@@ -536,6 +540,13 @@ ${room(52, "linear-gradient(90deg,#aaa49d 0%,#b7b1aa 40%,#bcb6af 70%,#b2aca5 100
 </div>
 ${framedMark(1510, 630, 220, 13, { frame: "#2f2c29", mat: "#f3f0ea", opacity: 0.8 })}
 ${lens(0.2)}${roomCards()}`,
+
+  // 16. Photo office: a generated photo of a grey home office (laptops removed, re-blurred; see
+  // assets/clean-photo.py), with the mark hung as a framed print above the shelf.
+  "16-photo-office": `
+<img class="abs" style="inset:0;width:1920px;height:1080px" src="file://${ASSETS}/photo-office.png">
+${framedMark(1430, 300, 230, 11, { frame: "#3a3d40", mat: "#dcdedd", opacity: 0.88 })}
+${lens(0.12)}${roomCards()}`,
 };
 
 const browser = await chromium.launch({ executablePath: process.env.CHROME ?? "/opt/pw-browsers/chromium-1194/chrome-linux/chrome" });

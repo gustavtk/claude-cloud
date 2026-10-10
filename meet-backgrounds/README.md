@@ -22,8 +22,9 @@ Logo, name and role sit top left; email and website top right; the middle stays 
 | `13-concrete-loft.png` | Ash concrete loft: steel window right, pendant lights and plant left, mark painted on the wall |
 | `14-bookshelf.png` | Light-oak shelving at both edges, soft downlight on the wall behind you, mark framed on a shelf |
 | `15-blinds-light.png` | Minimal warm-ash wall with sun through blinds, plant left, framed mark on a sideboard |
+| `16-photo-office.png` | A generated photo of a grey home office (Higgsfield, Z Image): laptops removed, re-blurred, mark framed above the shelf |
 
-The room backgrounds (06, 11–15) keep the area behind your head a plain, mid-light wall so the
+The room backgrounds (06, 11–16) keep the area behind your head a plain, mid-light wall so the
 edges of your hair and hands blend instead of glitching; every object sits at the edges. They
 carry camera grain so they match a webcam image and don't band once Meet compresses the video.
 
@@ -37,3 +38,7 @@ else sees the background exactly as uploaded, so the text reads correctly for th
 
 `render.mjs` rebuilds them (needs `playwright`, `@fontsource/plus-jakarta-sans`, `@fontsource/jetbrains-mono`):
 `node render.mjs out`
+
+`assets/photo-office-original.webp` is the generated photo as downloaded; `assets/clean-photo.py`
+removes its laptops (`python3 assets/clean-photo.py assets/photo-office-original.webp cleaned.png`),
+then a 9px Gaussian blur and a resize to 1920×1080 give `assets/photo-office.png`.
