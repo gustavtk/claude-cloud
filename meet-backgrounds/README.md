@@ -34,6 +34,16 @@ Logo, name and role sit top left; email and website top right; the middle stays 
 | `25-network.png` | Ash series: a constellation of linked nodes around the mark, a few glowing teal |
 | `26-glass-layers.png` | Ash series: three frosted glass panes (UI, API, DB) stacked in perspective, the mark on the front |
 | `27-flow-lines.png` | Ash series: a ribbon of fine flowing lines sweeping across the bottom, one traced in teal |
+| `28-terminal-3d.png` | Ash series: a dark terminal floating in perspective, scaffolding "gustav" across the stack |
+| `29-git-graph.png` | Ash series: a branch-and-merge commit graph along the bottom, tagged "v1.0 · ship it" |
+| `30-globe.png` | Ash series: a wireframe globe with teal flight arcs, the mark above it |
+| `31-ascii-mark.png` | Ash series: the mark drawn in code characters, the >_ in teal |
+| `32-neon.png` | Ash series: the mark as a glowing neon sign on an acrylic plate |
+| `33-low-poly.png` | Ash series: faceted low-poly triangles rising into the corner, the mark pressed in |
+| `34-browser-cascade.png` | Ash series: three wireframe browser windows cascading, the front one on gustavtk.com |
+| `35-waveform.png` | Ash series: audio equaliser bars in the bottom corners with an "ON AIR" light |
+| `36-keycaps.png` | Ash series: mechanical keycaps spelling G, T, >_ and a teal "ship ⏎" key |
+| `37-pixel-deploy.png` | Ash series: the mark built of pixels breaking off to the right, "DEPLOYING · 87%" |
 
 The room backgrounds (06, 11–16) keep the area behind your head a plain, mid-light wall so the
 edges of your hair and hands blend instead of glitching; every object sits at the edges. They

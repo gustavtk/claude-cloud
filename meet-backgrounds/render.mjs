@@ -129,6 +129,25 @@ const MARK_PATHS = [
 const markSvgData = (fill = "#000") =>
   "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 449 346">${MARK_PATHS.map((d) => `<path fill="${fill}" d="${d}"/>`).join("")}</svg>`);
 
+
+// The mark as polygons in its own 449×346 units, for designs that sample its shape point by point.
+const MARK_POLYS = [
+  [[90, 0], [278.5, 0], [278.5, 66], [112, 66], [73, 105], [73, 200], [90, 217], [181, 217], [181, 284.5], [65, 284.5], [0, 219.5], [0, 90]],
+  [[114, 103.5], [378.5, 103.5], [378.5, 170], [272.5, 170], [272.5, 346], [233.5, 346], [200.5, 313], [200.5, 170], [114, 170]],
+  [[294, 202.5], [306.5, 202.5], [362.5, 258.5], [306.5, 314.5], [294, 314.5], [294, 290.5], [326, 258.5], [294, 226.5]],
+  [[356, 290.5], [448.5, 290.5], [448.5, 314.5], [356, 314.5]],
+];
+const inPoly = (x, y, poly) => {
+  let inside = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const [xi, yi] = poly[i], [xj, yj] = poly[j];
+    if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+};
+// Which part of the mark a point falls in: 0 for the G and T, 1 for the >_, -1 outside.
+const markPart = (x, y) => (inPoly(x, y, MARK_POLYS[0]) || inPoly(x, y, MARK_POLYS[1]) ? 0 : inPoly(x, y, MARK_POLYS[2]) || inPoly(x, y, MARK_POLYS[3]) ? 1 : -1);
+
 const variants = {
   // 1. Grid studio: the site's grid background, inverted to light, with soft teal glows.
   "01-grid-studio": `
@@ -824,6 +843,235 @@ ${ashCards()}`,
     return `${ashBase()}
 <svg class="abs" style="inset:0" width="1920" height="1080">${lines}${teal}</svg>
 <div class="abs" style="right:100px;bottom:80px;opacity:.2">${mark(200, "#1e2224", "#0d9488")}</div>
+${ashCards()}`;
+  })(),
+
+  // 28. Terminal 3D: a dark terminal window floating in perspective at the bottom right, mid-way
+  // through scaffolding "gustav" across the stack.
+  "28-terminal-3d": `${ashBase()}
+<style>
+.t3{left:1230px;top:470px;width:600px;perspective:1500px}
+.term{transform:rotateY(-26deg) rotateX(8deg);background:rgb(24 27 29/.82);border:1px solid rgb(255 255 255/.14);border-radius:18px;box-shadow:0 40px 80px -30px rgb(10 12 14/.7),inset 0 1px 0 rgb(255 255 255/.08);overflow:hidden;font-family:Mono}
+.tbar{display:flex;align-items:center;gap:9px;padding:14px 18px;border-bottom:1px solid rgb(255 255 255/.08);font-size:14px;color:rgb(255 255 255/.5)}
+.tbar i{width:11px;height:11px;border-radius:50%;display:block}
+.tbar span{margin-left:auto}
+.tbody{padding:18px 22px 24px;font-size:19px;line-height:1.85;color:rgb(255 255 255/.86);white-space:pre}
+.tbody .g{color:#5eead4}.tbody .m{color:rgb(255 255 255/.45)}
+.cur{display:inline-block;width:11px;height:22px;background:#5eead4;vertical-align:-4px}
+</style>
+<div class="abs t3"><div class="term">
+  <div class="tbar"><i style="background:#f87171"></i><i style="background:#fbbf24"></i><i style="background:#34d399"></i><span>gustav@gtk: ~</span></div>
+  <div class="tbody"><span class="g">$</span> npx create-gustav-app
+<span class="g">✓</span> frontend   <span class="m">react · next</span>
+<span class="g">✓</span> backend    <span class="m">node · postgres</span>
+<span class="g">✓</span> cloud      <span class="m">deployed</span>
+<span class="g">$</span> status
+<span class="g">●</span> available for new projects
+<span class="g">$</span> <span class="cur"></span></div>
+</div></div>
+${ashCards()}`,
+
+  // 29. Git graph: a branch-and-merge commit graph running along the bottom right, feature
+  // branches peeling off main and merging back, the last commit tagged with the mark.
+  "29-git-graph": (() => {
+    const yMain = 960, yA = 860, yB = 760;
+    const main = `M1080 ${yMain} H1960`;
+    const fa = `M1180 ${yMain} C1240 ${yMain}, 1240 ${yA}, 1300 ${yA} H1500 C1560 ${yA}, 1560 ${yMain}, 1620 ${yMain}`;
+    const fb = `M1360 ${yA} C1420 ${yA}, 1420 ${yB}, 1480 ${yB} H1700 C1760 ${yB}, 1760 ${yMain}, 1820 ${yMain}`;
+    const dot = (x, y, c = "#f1f3f3") => `<circle cx="${x}" cy="${y}" r="10" fill="${c}" stroke="rgb(30 34 36/.35)" stroke-width="2"/>`;
+    const lbl = (x, y, t, c = "rgb(255 255 255/.75)") => `<text x="${x}" y="${y}" font-family="Mono" font-size="15" fill="${c}" letter-spacing="1">${t}</text>`;
+    return `${ashBase()}
+<svg class="abs" style="inset:0" width="1920" height="1080">
+  <g fill="none" stroke-width="5" stroke-linecap="round">
+    <path d="${main}" stroke="rgb(241 243 243/.75)"/><path d="${fa}" stroke="rgb(94 234 212/.8)"/><path d="${fb}" stroke="rgb(207 182 155/.9)"/>
+  </g>
+  ${dot(1120, yMain)}${dot(1240, yMain)}${dot(1360, yA, "#5eead4")}${dot(1440, yA, "#5eead4")}${dot(1560, yB, "#e2cdb4")}${dot(1660, yB, "#e2cdb4")}${dot(1620, yMain)}${dot(1820, yMain)}
+  ${lbl(1090, yMain + 40, "main")}${lbl(1300, yA - 22, "feat/frontend", "rgb(94 234 212/.9)")}${lbl(1480, yB - 22, "feat/api", "rgb(226 205 180/.95)")}
+  ${lbl(1596, yMain + 40, "merge")}${lbl(1772, yMain + 40, "v1.0 · ship it")}
+</svg>
+<div class="abs" style="left:1790px;top:${yMain - 120}px;opacity:.9">${mark(62, "#f1f3f3", "#5eead4")}</div>
+${ashCards()}`;
+  })(),
+
+  // 30. Globe: a wireframe globe rising from the bottom right, with teal flight arcs between a few
+  // points, for work shipped to clients anywhere.
+  "30-globe": (() => {
+    const cx = 1640, cy = 900, r = 300;
+    const merid = Array.from({ length: 9 }, (_, i) => {
+      const a = (i / 9) * Math.PI;
+      return `<ellipse cx="${cx}" cy="${cy}" rx="${Math.abs(r * Math.cos(a)).toFixed(1)}" ry="${r}" />`;
+    }).join("");
+    const lat = [-60, -40, -20, 0, 20, 40, 60].map((d) => {
+      const t = (d * Math.PI) / 180;
+      return `<ellipse cx="${cx}" cy="${(cy + r * Math.sin(t)).toFixed(1)}" rx="${(r * Math.cos(t)).toFixed(1)}" ry="${(r * Math.cos(t) * 0.16).toFixed(1)}" />`;
+    }).join("");
+    const pts = [[1450, 760], [1600, 700], [1780, 790], [1700, 960], [1520, 900]];
+    const arcs = [[0, 2], [1, 3], [4, 2], [0, 3]].map(([a, b]) => {
+      const [x1, y1] = pts[a], [x2, y2] = pts[b];
+      return `<path d="M${x1} ${y1} Q${(x1 + x2) / 2} ${Math.min(y1, y2) - 140} ${x2} ${y2}" />`;
+    }).join("");
+    return `${ashBase()}
+<svg class="abs" style="inset:0" width="1920" height="1080">
+  <circle cx="${cx}" cy="${cy}" r="${r}" fill="rgb(255 255 255/.05)" stroke="rgb(255 255 255/.35)" stroke-width="1.6"/>
+  <g fill="none" stroke="rgb(255 255 255/.22)" stroke-width="1.2">${merid}${lat}</g>
+  <g fill="none" stroke="rgb(94 234 212/.85)" stroke-width="2.2" stroke-dasharray="6 7" style="filter:drop-shadow(0 0 5px rgb(45 212 191/.6))">${arcs}</g>
+  ${pts.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="6" fill="#5eead4" style="filter:drop-shadow(0 0 7px rgb(45 212 191/.9))"/>`).join("")}
+</svg>
+<div class="abs" style="left:${cx - 58}px;top:${cy - r - 118}px;opacity:.85">${mark(90, "#f1f3f3", "#5eead4")}</div>
+${ashCards()}`;
+  })(),
+
+  // 31. ASCII: the mark drawn in code characters, like an old terminal render, filling the bottom
+  // right with the >_ in teal.
+  "31-ascii-mark": (() => {
+    const R = rng(31);
+    const chars = "01{}<>/;=()[]+*#";
+    const cell = 9.2, k = 1.3, ox = 1290, oy = 560;
+    const glyphs = [];
+    for (let y = 0; y < 346; y += cell) for (let x = 0; x < 449; x += cell) {
+      const part = markPart(x + cell / 2, y + cell / 2);
+      if (part < 0 && R() > 0.06) continue;
+      const ch = chars[Math.floor(R() * chars.length)].replace("<", "&lt;").replace(">", "&gt;");
+      const fill = part === 0 ? "rgb(241 243 243/.7)" : part === 1 ? "#5eead4" : "rgb(241 243 243/.18)";
+      glyphs.push(`<text x="${(ox + x * k).toFixed(1)}" y="${(oy + (y + cell) * k).toFixed(1)}" fill="${fill}">${ch}</text>`);
+    }
+    return `${ashBase()}
+<svg class="abs" style="inset:0" width="1920" height="1080"><g font-family="Mono" font-weight="700" font-size="${(cell * k * 1.05).toFixed(1)}">${glyphs.join("")}</g></svg>
+${ashCards()}`;
+  })(),
+
+  // 32. Neon: the mark bent in glowing neon tube on a clear acrylic plate, mounted on the wall at the
+  // bottom right, washing the wall in teal.
+  "32-neon": `${ashBase()}
+<div class="abs" style="left:1260px;top:540px;width:640px;height:520px;border-radius:50%;background:radial-gradient(closest-side,rgb(45 212 191/.25),transparent)"></div>
+<div class="abs" style="left:1350px;top:610px;width:470px;height:390px;border-radius:22px;background:rgb(255 255 255/.06);border:1.5px solid rgb(255 255 255/.22);box-shadow:0 30px 50px -30px rgb(10 12 14/.5)">
+  ${[[18, 18], [430, 18], [18, 350], [430, 350]].map(([x, y]) => `<i style="position:absolute;left:${x}px;top:${y}px;width:12px;height:12px;border-radius:50%;background:rgb(220 224 224/.7);display:block"></i>`).join("")}
+</div>
+<svg class="abs" style="left:1395px;top:650px" width="380" height="300" viewBox="-12 -12 473 370">
+  <g fill="none" stroke-linejoin="round" stroke-linecap="round">
+    ${MARK_PATHS.slice(0, 2).map((d) => `<path d="${d}" stroke="#f2fffc" stroke-width="7" style="filter:drop-shadow(0 0 6px rgb(255 255 255/.9)) drop-shadow(0 0 18px rgb(94 234 212/.8))"/>`).join("")}
+    ${MARK_PATHS.slice(2).map((d) => `<path d="${d}" stroke="#7af5e1" stroke-width="7" style="filter:drop-shadow(0 0 6px rgb(94 234 212/1)) drop-shadow(0 0 22px rgb(45 212 191/.9))"/>`).join("")}
+  </g>
+</svg>
+<svg class="abs" style="left:1700px;top:1000px" width="160" height="80"><path d="M10 0 C 30 50, 90 40, 150 80" fill="none" stroke="rgb(30 34 36/.5)" stroke-width="3"/></svg>
+${ashCards()}`,
+
+  // 33. Low poly: a faceted, folded-paper landscape of grey triangles rising into the bottom-right
+  // corner, the mark pressed into the largest facets.
+  "33-low-poly": (() => {
+    const R = rng(33);
+    const x0 = 1080, y0 = 520, cols = 9, rowsN = 7, cw = 110, ch = 100;
+    const P = [];
+    for (let r = 0; r <= rowsN; r++) {
+      P.push([]);
+      for (let c = 0; c <= cols; c++) {
+        const edge = r === 0 || c === 0 || r === rowsN || c === cols;
+        P[r].push([x0 + c * cw + (edge ? 0 : (R() - 0.5) * 70), y0 + r * ch + (edge ? 0 : (R() - 0.5) * 60)]);
+      }
+    }
+    const tris = [];
+    for (let r = 0; r < rowsN; r++) for (let c = 0; c < cols; c++) {
+      const a = P[r][c], b = P[r][c + 1], d = P[r + 1][c], e = P[r + 1][c + 1];
+      const flip = R() < 0.5;
+      for (const t of flip ? [[a, b, e], [a, e, d]] : [[a, b, d], [b, e, d]]) {
+        // Facets brighten toward the lamp (top right) and darken toward the floor.
+        const mx = (t[0][0] + t[1][0] + t[2][0]) / 3, my = (t[0][1] + t[1][1] + t[2][1]) / 3;
+        const v = 150 + (mx - x0) * 0.04 - (my - y0) * 0.05 + (R() - 0.5) * 34;
+        tris.push(`<polygon points="${t.map((p) => p.join(",")).join(" ")}" fill="rgb(${v.toFixed(0)} ${(v + 4).toFixed(0)} ${(v + 4).toFixed(0)})" stroke="rgb(255 255 255/.14)" stroke-width="1"/>`);
+      }
+    }
+    return `${ashBase()}
+<svg class="abs" style="inset:0;-webkit-mask-image:radial-gradient(circle at 100% 100%,#000 0,#000 420px,transparent 900px)" width="1920" height="1080">${tris.join("")}</svg>
+<div class="abs" style="left:1560px;top:810px;filter:drop-shadow(-2px -2px 1px rgb(20 22 24/.4)) drop-shadow(2px 2px 1px rgb(255 255 255/.4))">${mark(140, "#a5aaaa", "#7fb3ab")}</div>
+${ashCards()}`;
+  })(),
+
+  // 34. Browser cascade: three wireframe browser windows cascading down the right side, page
+  // skeletons inside, the front one open on gustavtk.com.
+  "34-browser-cascade": (() => {
+    const win = (x, y, w, h, front) => `
+<div class="abs" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;border-radius:14px;background:rgb(255 255 255/${front ? 0.16 : 0.07});border:1.5px solid rgb(255 255 255/${front ? 0.55 : 0.3});box-shadow:0 30px 60px -32px rgb(10 12 14/.55);backdrop-filter:blur(${front ? 8 : 3}px);overflow:hidden">
+  <div style="display:flex;align-items:center;gap:7px;padding:12px 14px;border-bottom:1px solid rgb(255 255 255/.18)">
+    <i style="width:9px;height:9px;border-radius:50%;background:rgb(255 255 255/.45);display:block"></i><i style="width:9px;height:9px;border-radius:50%;background:rgb(255 255 255/.35);display:block"></i><i style="width:9px;height:9px;border-radius:50%;background:rgb(255 255 255/.25);display:block"></i>
+    <span style="margin-left:12px;flex:1;height:22px;border-radius:11px;background:rgb(255 255 255/.14);font-family:Mono;font-size:13px;line-height:22px;padding-left:12px;color:rgb(255 255 255/.75)">${front ? "gustavtk.com" : ""}</span>
+  </div>
+  <div style="padding:22px">
+    ${front ? `<div style="display:flex;align-items:center;gap:16px;margin-bottom:20px"><div style="opacity:.9">${mark(46, "#f1f3f3", "#5eead4")}</div><div style="height:14px;width:150px;border-radius:7px;background:rgb(255 255 255/.4)"></div></div>` : ""}
+    <div style="height:12px;width:78%;border-radius:6px;background:rgb(255 255 255/.25);margin-bottom:12px"></div>
+    <div style="height:12px;width:62%;border-radius:6px;background:rgb(255 255 255/.18);margin-bottom:22px"></div>
+    <div style="display:flex;gap:12px"><div style="flex:1;height:${front ? 80 : 60}px;border-radius:10px;background:rgb(255 255 255/.12)"></div><div style="flex:1;height:${front ? 80 : 60}px;border-radius:10px;background:rgb(255 255 255/.12)"></div><div style="flex:1;height:${front ? 80 : 60}px;border-radius:10px;background:${front ? "rgb(94 234 212/.35)" : "rgb(255 255 255/.12)"}"></div></div>
+  </div>
+</div>`;
+    return `${ashBase()}${win(1560, 330, 340, 240, false)}${win(1480, 500, 380, 270, false)}${win(1380, 690, 440, 320, true)}${ashCards()}`;
+  })(),
+
+  // 35. Waveform: an equaliser of live audio bars rising from the bottom corners, for a call
+  // background that answers to the voice in it, with the centre left quiet.
+  "35-waveform": (() => {
+    const bars = [];
+    const add = (from, to) => {
+      for (let x = from; x < to; x += 16) {
+        const t = x / 1920;
+        const h = 40 + 160 * Math.abs(Math.sin(x * 0.021) * Math.cos(x * 0.0071) + 0.4 * Math.sin(x * 0.063)) * (from > 900 ? 1.25 : 0.9);
+        const lit = (x / 16) % 9 === 0;
+        bars.push(`<rect x="${x}" y="${1080 - h}" width="9" height="${h}" rx="4.5" fill="${lit ? "rgb(94 234 212/.75)" : "rgb(241 243 243/.32)"}" ${lit ? 'style="filter:drop-shadow(0 0 6px rgb(45 212 191/.7))"' : ""}/>`);
+        bars.push(`<rect x="${x}" y="${1080 - h - 16}" width="9" height="5" rx="2.5" fill="rgb(241 243 243/.45)"/>`);
+        void t;
+      }
+    };
+    add(16, 560);
+    add(1320, 1920);
+    return `${ashBase()}
+<svg class="abs" style="inset:0" width="1920" height="1080">${bars.join("")}</svg>
+<div class="abs" style="right:96px;top:640px;font-family:Mono;font-size:15px;letter-spacing:.24em;color:rgb(241 243 243/.75);display:flex;align-items:center;gap:10px"><i style="width:10px;height:10px;border-radius:50%;background:#f87171;box-shadow:0 0 10px rgb(248 113 113/.8);display:block"></i>ON AIR</div>
+<div class="abs" style="right:96px;top:690px;opacity:.75">${mark(64, "#f1f3f3", "#5eead4")}</div>
+${ashCards()}`;
+  })(),
+
+  // 36. Keycaps: oversized mechanical keyboard keys at the bottom right spelling the mark, G, T and
+  // >_, with a wide "ship" enter key.
+  "36-keycaps": (() => {
+    const key = (x, y, w, legend, opts = {}) => {
+      const { color = "#e6e9e9", ink = "#1f2427", side = "#9ea4a5", font = "Jakarta", size = 64 } = opts;
+      return `<div class="abs" style="left:${x}px;top:${y}px;width:${w}px;height:150px">
+  <div style="position:absolute;inset:14px 0 0 0;border-radius:22px;background:${side};box-shadow:0 26px 40px -18px rgb(10 12 14/.6)"></div>
+  <div style="position:absolute;left:10px;right:10px;top:0;height:120px;border-radius:18px;background:linear-gradient(160deg,#ffffff 0%,${color} 60%);box-shadow:inset 0 -6px 10px rgb(0 0 0/.08);display:flex;align-items:center;justify-content:center;font-family:${font};font-weight:800;font-size:${size}px;color:${ink};letter-spacing:-.02em">${legend}</div>
+</div>`;
+    };
+    return `${ashBase()}
+<div class="abs" style="left:1190px;top:640px;width:720px;height:440px;transform:rotate(-8deg);transform-origin:50% 50%">
+  ${key(40, 40, 150, "G")}${key(210, 40, 150, "T")}${key(380, 40, 150, "&gt;_", { ink: "#0d9488", font: "Mono", size: 58 })}
+  ${key(120, 210, 410, "ship ⏎", { color: "#5eead4", side: "#2f8f84", ink: "#0b3b36", font: "Mono", size: 40 })}
+</div>
+${ashCards()}`;
+  })(),
+
+  // 37. Pixel deploy: the mark built from square pixels that break away and stream off the right
+  // edge, as if it were being deployed.
+  "37-pixel-deploy": (() => {
+    const R = rng(37);
+    const step = 14, s = 1.18, ox = 1220, oy = 520;
+    const px = [];
+    for (let y = 0; y < 346; y += step) for (let x = 0; x < 449; x += step) {
+      const part = markPart(x + step / 2, y + step / 2);
+      if (part < 0) continue;
+      const fly = x / 449;
+      const gone = R() < Math.max(0, fly - 0.45) * 1.4;
+      const size = step * s - 3;
+      if (!gone) {
+        px.push(`<rect x="${(ox + x * s).toFixed(1)}" y="${(oy + y * s).toFixed(1)}" width="${size.toFixed(1)}" height="${size.toFixed(1)}" rx="2" fill="${part ? "#5eead4" : "rgb(241 243 243/.82)"}"/>`);
+      } else {
+        // Broken-off pixels drift right and up, shrinking and fading the further they travel.
+        const d = R();
+        const dx = 80 + d * 520, dy = -(R() * 160);
+        const k = 1 - d * 0.7;
+        px.push(`<rect x="${(ox + x * s + dx).toFixed(1)}" y="${(oy + y * s + dy).toFixed(1)}" width="${(size * k).toFixed(1)}" height="${(size * k).toFixed(1)}" rx="2" fill="${part ? "rgb(94 234 212/" : "rgb(241 243 243/"}${(0.75 - d * 0.6).toFixed(2)})"/>`);
+      }
+    }
+    return `${ashBase()}
+<svg class="abs" style="inset:0" width="1920" height="1080">${px.join("")}</svg>
+<div class="abs" style="left:1224px;top:1010px;font-family:Mono;font-size:15px;letter-spacing:.2em;color:rgb(241 243 243/.7)">DEPLOYING · 87%</div>
+<div class="abs" style="left:1224px;top:988px;width:340px;height:4px;border-radius:2px;background:rgb(255 255 255/.2)"><div style="width:87%;height:100%;border-radius:2px;background:#5eead4"></div></div>
 ${ashCards()}`;
   })(),
 };
