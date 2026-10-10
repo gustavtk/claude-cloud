@@ -547,6 +547,43 @@ ${lens(0.2)}${roomCards()}`,
 <img class="abs" style="inset:0;width:1920px;height:1080px" src="file://${ASSETS}/photo-office.png">
 ${framedMark(1430, 300, 230, 11, { frame: "#3a3d40", mat: "#dcdedd", opacity: 0.88 })}
 ${lens(0.12)}${roomCards()}`,
+  // 17. Glass ash: the Glass layout in the photo office's colours (sampled from
+  // assets/photo-office.png): ash-grey wall, cool window light left, warm lamp glow right, wood below.
+  "17-glass-ash": `
+<style>
+body{background:#939898}
+.field{left:0;right:0;top:0;height:760px;overflow:hidden;filter:blur(90px) saturate(1.05)}
+.field i{position:absolute;border-radius:50%;display:block}
+.fade{left:0;right:0;top:0;height:780px;background:linear-gradient(rgb(147 152 152/0) 0%,rgb(147 152 152/.18) 25%,rgb(147 152 152/.45) 45%,rgb(147 152 152/.75) 65%,rgb(147 152 152/.94) 82%,#939898 100%)}
+.wash{left:0;right:0;bottom:0;height:420px;background:linear-gradient(transparent,rgb(144 129 110/.3))}
+.grid{inset:0;background-size:48px 48px;background-image:linear-gradient(to right,rgb(20 22 24/.05) 1px,transparent 1px),linear-gradient(to bottom,rgb(20 22 24/.05) 1px,transparent 1px);
+  -webkit-mask-image:radial-gradient(ellipse 120% 100% at 50% 0%,#000 35%,rgb(0 0 0/.55) 100%)}
+.pill{background:rgb(255 255 255/.8);border:1px solid rgb(255 255 255/.9);box-shadow:0 18px 40px -22px rgb(20 22 26/.45),inset 0 1px 0 #fff;backdrop-filter:blur(14px);border-radius:28px}
+.id{left:80px;top:72px;display:flex;align-items:center;gap:28px;padding:26px 40px 26px 30px}
+.nm{font-size:66px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.rl{font-family:Mono;font-size:16px;letter-spacing:.22em;color:var(--muted);margin-top:10px}
+.ct{right:80px;top:72px;padding:24px 34px;text-align:right}
+.c{font-size:25px;color:var(--ink2);line-height:1.7;font-weight:500}
+.wm{right:56px;bottom:48px}
+</style>
+<div class="abs field">
+  <i style="left:-160px;top:-260px;width:900px;height:640px;background:rgb(189 193 192/.75)"></i>
+  <i style="left:520px;top:-320px;width:900px;height:600px;background:rgb(160 166 166/.55)"></i>
+  <i style="left:980px;top:-200px;width:700px;height:460px;background:rgb(207 182 155/.35)"></i>
+  <i style="right:-200px;top:-280px;width:900px;height:640px;background:rgb(207 182 155/.5)"></i>
+</div>
+<div class="abs fade"></div><div class="abs wash"></div>
+<div class="abs grid"></div>
+<div class="abs wm"><svg viewBox="0 0 449 346" style="height:580px;display:block" aria-hidden>
+  <defs><linearGradient id="wga" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f3336" stop-opacity=".1"/><stop offset="1" stop-color="#2f3336" stop-opacity=".07"/></linearGradient></defs>
+  <path fill="url(#wga)" d="M90 0h188.5v66H112l-39 39v95l17 17h91v67.5H65L0 219.5V90z"/>
+  <path fill="url(#wga)" d="M114 103.5h264.5V170h-106v176h-39l-33-33V170H114z"/>
+  <path fill="#0d9488" fill-opacity=".2" d="M294 202.5h12.5l56 56-56 56H294v-24l32-32-32-32z"/>
+  <path fill="#0d9488" fill-opacity=".2" d="M356 290.5h92.5v24H356z"/>
+</svg></div>
+<div class="abs pill id">${mark(76)}<div><div class="nm">Gustav</div><div class="rl">FULL-STACK DEVELOPER</div></div></div>
+<div class="abs pill ct">${contact("c")}</div>`,
+
 };
 
 const browser = await chromium.launch({ executablePath: process.env.CHROME ?? "/opt/pw-browsers/chromium-1194/chrome-linux/chrome" });
