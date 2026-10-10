@@ -195,17 +195,18 @@ body{background:#f7f9fc}
 <div class="abs pill id">${mark(76)}<div><div class="nm">Gustav</div><div class="rl">FULL-STACK DEVELOPER</div></div></div>
 <div class="abs pill ct">${contact("c")}</div>`,
 
-  // 6. Blurred studio: a bright home office, thrown out of focus as if the camera blurred it,
-  // with the mark glowing as a teal neon sign on the wall and crisp frosted cards on top.
-  "06-blurred-studio": `
+  // 6. Soft blur: a real room thrown far out of focus, the way a camera's background blur leaves
+  // it: light walls, a bright doorway, a dark shape at the edge, camera grain. The mark sits on the
+  // wall as an out-of-focus sign, and the details stay sharp on frosted cards.
+  "06-soft-blur": `
 <style>
-body{background:#e9eeec}
-.room{inset:-60px;filter:blur(26px) saturate(1.05)}
-.room i{position:absolute;display:block}
-.neon{right:150px;top:470px;filter:blur(5px)}
-.neon svg{filter:drop-shadow(0 0 18px rgb(1 240 201/.75)) drop-shadow(0 0 40px rgb(6 182 212/.45))}
-.vig{inset:0;background:radial-gradient(ellipse 80% 75% at 50% 45%,transparent 55%,rgb(30 41 59/.12))}
-.pill{background:rgb(255 255 255/.74);border:1px solid rgb(255 255 255/.95);box-shadow:0 18px 40px -22px rgb(15 23 42/.35),inset 0 1px 0 #fff;backdrop-filter:blur(16px);border-radius:28px}
+body{background:#e6e2dc}
+.room{inset:-160px;filter:blur(70px)}
+.room i{position:absolute;display:block;border-radius:40px}
+.sign{right:170px;top:430px;filter:blur(8px);opacity:.5}
+.vig{inset:0;background:radial-gradient(ellipse 75% 70% at 52% 48%,transparent 50%,rgb(60 52 44/.16))}
+.grain{inset:0;opacity:.07;mix-blend-mode:multiply}
+.pill{background:rgb(255 255 255/.72);border:1px solid rgb(255 255 255/.9);box-shadow:0 18px 40px -22px rgb(30 25 20/.35),inset 0 1px 0 #fff;backdrop-filter:blur(16px);border-radius:28px}
 .id{left:80px;top:72px;display:flex;align-items:center;gap:28px;padding:26px 40px 26px 30px}
 .nm{font-size:66px;font-weight:800;letter-spacing:-.03em;line-height:1}
 .rl{font-family:Mono;font-size:16px;letter-spacing:.22em;color:var(--muted);margin-top:10px}
@@ -213,36 +214,23 @@ body{background:#e9eeec}
 .c{font-size:25px;color:var(--ink2);line-height:1.7;font-weight:500}
 </style>
 <div class="abs room">
-  <i style="inset:0;background:linear-gradient(180deg,#eef2f1 0%,#e7ecea 60%,#dfe5e3 100%)"></i>
-  <i style="left:0;top:40px;width:640px;height:820px;background:#cdd6d3"></i>
-  <i style="left:40px;top:80px;width:560px;height:740px;background:linear-gradient(180deg,#ffffff,#f4fbf8 55%,#e3f2ea)"></i>
-  <i style="left:40px;top:430px;width:560px;height:390px;background:linear-gradient(180deg,rgb(167 201 87/.35),rgb(106 153 78/.45))"></i>
-  <i style="left:310px;top:80px;width:14px;height:740px;background:#cdd6d3"></i>
-  <i style="left:40px;top:430px;width:560px;height:12px;background:#cdd6d3"></i>
-  <i style="left:660px;top:-120px;width:620px;height:560px;border-radius:50%;background:radial-gradient(closest-side,rgb(255 236 200/.85),transparent)"></i>
-  <i style="left:950px;top:0;width:8px;height:200px;background:#9aa5a2"></i>
-  <i style="left:900px;top:190px;width:110px;height:60px;border-radius:55px 55px 6px 6px;background:#f5efe3"></i>
-  <i style="left:1260px;top:330px;width:700px;height:22px;background:#c2ad8e"></i>
-  <i style="left:1300px;top:200px;width:40px;height:130px;background:#2f4858"></i>
-  <i style="left:1344px;top:220px;width:34px;height:110px;background:#e9c46a"></i>
-  <i style="left:1382px;top:190px;width:44px;height:140px;background:#8ab17d"></i>
-  <i style="left:1430px;top:230px;width:30px;height:100px;background:#e76f51;opacity:.75"></i>
-  <i style="left:1464px;top:210px;width:40px;height:120px;background:#264653"></i>
-  <i style="left:1560px;top:250px;width:120px;height:80px;border-radius:50%;background:#7fb069"></i>
-  <i style="left:1740px;top:215px;width:46px;height:115px;background:#f4f1ea"></i>
-  <i style="left:1792px;top:240px;width:36px;height:90px;background:#457b9d"></i>
-  <i style="left:0;top:880px;width:2040px;height:300px;background:linear-gradient(180deg,#d8c4a6,#c9b190)"></i>
-  <i style="left:0;top:860px;width:2040px;height:24px;background:#e6d6bd"></i>
-  <i style="left:420px;top:740px;width:150px;height:150px;border-radius:14px;background:#efeae2"></i>
-  <i style="left:360px;top:560px;width:180px;height:220px;border-radius:50%;background:#5f8f4e"></i>
-  <i style="left:470px;top:520px;width:150px;height:240px;border-radius:50%;background:#7aa95c"></i>
-  <i style="left:1600px;top:760px;width:260px;height:140px;border-radius:12px;background:#f7f4ee"></i>
-  <i style="left:1650px;top:700px;width:70px;height:80px;border-radius:50%;background:#f2c57c;opacity:.8"></i>
-  <i style="left:120px;top:150px;width:60px;height:60px;border-radius:50%;background:#fff;box-shadow:0 0 40px 20px #fff"></i>
-  <i style="left:250px;top:300px;width:40px;height:40px;border-radius:50%;background:#fff;box-shadow:0 0 30px 14px #fff"></i>
+  <i style="inset:0;border-radius:0;background:linear-gradient(100deg,#d9d4cd 0%,#e7e3dd 35%,#ece9e4 60%,#e4e0da 100%)"></i>
+  <i style="left:0;right:0;top:0;height:300px;border-radius:0;background:linear-gradient(#cdc7bf,transparent)"></i>
+  <i style="left:0;right:0;bottom:0;height:380px;border-radius:0;background:linear-gradient(transparent,#d3cdc5)"></i>
+  <i style="left:40px;top:560px;width:380px;height:760px;background:#7a6f64;opacity:.6"></i>
+  <i style="left:160px;top:420px;width:200px;height:300px;background:#8c8176;opacity:.35"></i>
+  <i style="left:1260px;top:380px;width:380px;height:820px;background:#f9f8f6"></i>
+  <i style="left:1320px;top:440px;width:240px;height:700px;background:#ffffff"></i>
+  <i style="left:1660px;top:420px;width:70px;height:800px;background:#c9c2b8;opacity:.6"></i>
+  <i style="left:1940px;top:420px;width:300px;height:420px;background:#c7b391;opacity:.55"></i>
+  <i style="left:620px;top:200px;width:520px;height:420px;border-radius:50%;background:#efece7;opacity:.7"></i>
 </div>
-<div class="abs neon">${mark(250, "#d9fdf6", "#01f0c9")}</div>
+<div class="abs sign"><svg viewBox="0 0 449 346" style="height:170px;display:block" aria-hidden>
+  <path fill="#55636a" d="M90 0h188.5v66H112l-39 39v95l17 17h91v67.5H65L0 219.5V90z"/>
+  <path fill="#55636a" d="M114 103.5h264.5V170h-106v176h-39l-33-33V170H114z"/>
+  <path fill="#0d9488" d="M294 202.5h12.5l56 56-56 56H294v-24l32-32-32-32z"/><path fill="#0d9488" d="M356 290.5h92.5v24H356z"/></svg></div>
 <div class="abs vig"></div>
+<svg class="abs grain" width="1920" height="1080"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
 <div class="abs pill id">${mark(76)}<div><div class="nm">Gustav</div><div class="rl">${ROLE}</div></div></div>
 <div class="abs pill ct">${contact("c")}</div>`,
 

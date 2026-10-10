@@ -12,7 +12,7 @@ Logo, name and role sit top left; email and website top right; the middle stays 
 | `03-browser.png` | A light browser window: your brand in the tab, gustavtk.com in the address bar |
 | `04-code.png` | Your contact details as a `contact.ts` snippet in a small editor card |
 | `05-glass.png` | Frosted-glass cards over a light take on the site hero glow and grid, with a teal mark watermark bottom right (role: Full-Stack Developer) |
-| `06-blurred-studio.png` | A bright home office thrown out of focus, like a blurred background, with your mark as a teal neon sign on the wall |
+| `06-soft-blur.png` | A light room far out of focus, like a webcam background blur, with the mark as a soft out-of-focus sign on the wall |
 | `07-blueprint.png` | An engineering drawing: title block top left, contact cells top right, the mark dimensioned bottom right |
 | `08-paper-layers.png` | Stacked cut-paper waves in brand teals, the mark embossed into the front sheet |
 | `09-full-stack.png` | "Full-stack" made literal: UI, API and DB layers stacked bottom right, the mark on top |
