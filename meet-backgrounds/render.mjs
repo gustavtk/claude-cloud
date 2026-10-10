@@ -8,6 +8,7 @@ const fs = (p) => "file://" + resolve(process.env.FONTS_DIR ?? "node_modules/@fo
 
 const EMAIL = "gustav@gustavtk.com";
 const SITE = "gustavtk.com";
+const ROLE = "FULL-STACK DEVELOPER";
 
 // Brand mark (public/brand/gustavtk-mark.svg); G/T follow currentColor, >_ uses --acc.
 const mark = (h, color = "var(--ink)", acc = "var(--teal)") => `
@@ -193,6 +194,203 @@ body{background:#f7f9fc}
 </svg></div>
 <div class="abs pill id">${mark(76)}<div><div class="nm">Gustav</div><div class="rl">FULL-STACK DEVELOPER</div></div></div>
 <div class="abs pill ct">${contact("c")}</div>`,
+
+  // 6. Blurred studio: a bright home office, thrown out of focus as if the camera blurred it,
+  // with the mark glowing as a teal neon sign on the wall and crisp frosted cards on top.
+  "06-blurred-studio": `
+<style>
+body{background:#e9eeec}
+.room{inset:-60px;filter:blur(26px) saturate(1.05)}
+.room i{position:absolute;display:block}
+.neon{right:150px;top:470px;filter:blur(5px)}
+.neon svg{filter:drop-shadow(0 0 18px rgb(1 240 201/.75)) drop-shadow(0 0 40px rgb(6 182 212/.45))}
+.vig{inset:0;background:radial-gradient(ellipse 80% 75% at 50% 45%,transparent 55%,rgb(30 41 59/.12))}
+.pill{background:rgb(255 255 255/.74);border:1px solid rgb(255 255 255/.95);box-shadow:0 18px 40px -22px rgb(15 23 42/.35),inset 0 1px 0 #fff;backdrop-filter:blur(16px);border-radius:28px}
+.id{left:80px;top:72px;display:flex;align-items:center;gap:28px;padding:26px 40px 26px 30px}
+.nm{font-size:66px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.rl{font-family:Mono;font-size:16px;letter-spacing:.22em;color:var(--muted);margin-top:10px}
+.ct{right:80px;top:72px;padding:24px 34px;text-align:right}
+.c{font-size:25px;color:var(--ink2);line-height:1.7;font-weight:500}
+</style>
+<div class="abs room">
+  <i style="inset:0;background:linear-gradient(180deg,#eef2f1 0%,#e7ecea 60%,#dfe5e3 100%)"></i>
+  <i style="left:0;top:40px;width:640px;height:820px;background:#cdd6d3"></i>
+  <i style="left:40px;top:80px;width:560px;height:740px;background:linear-gradient(180deg,#ffffff,#f4fbf8 55%,#e3f2ea)"></i>
+  <i style="left:40px;top:430px;width:560px;height:390px;background:linear-gradient(180deg,rgb(167 201 87/.35),rgb(106 153 78/.45))"></i>
+  <i style="left:310px;top:80px;width:14px;height:740px;background:#cdd6d3"></i>
+  <i style="left:40px;top:430px;width:560px;height:12px;background:#cdd6d3"></i>
+  <i style="left:660px;top:-120px;width:620px;height:560px;border-radius:50%;background:radial-gradient(closest-side,rgb(255 236 200/.85),transparent)"></i>
+  <i style="left:950px;top:0;width:8px;height:200px;background:#9aa5a2"></i>
+  <i style="left:900px;top:190px;width:110px;height:60px;border-radius:55px 55px 6px 6px;background:#f5efe3"></i>
+  <i style="left:1260px;top:330px;width:700px;height:22px;background:#c2ad8e"></i>
+  <i style="left:1300px;top:200px;width:40px;height:130px;background:#2f4858"></i>
+  <i style="left:1344px;top:220px;width:34px;height:110px;background:#e9c46a"></i>
+  <i style="left:1382px;top:190px;width:44px;height:140px;background:#8ab17d"></i>
+  <i style="left:1430px;top:230px;width:30px;height:100px;background:#e76f51;opacity:.75"></i>
+  <i style="left:1464px;top:210px;width:40px;height:120px;background:#264653"></i>
+  <i style="left:1560px;top:250px;width:120px;height:80px;border-radius:50%;background:#7fb069"></i>
+  <i style="left:1740px;top:215px;width:46px;height:115px;background:#f4f1ea"></i>
+  <i style="left:1792px;top:240px;width:36px;height:90px;background:#457b9d"></i>
+  <i style="left:0;top:880px;width:2040px;height:300px;background:linear-gradient(180deg,#d8c4a6,#c9b190)"></i>
+  <i style="left:0;top:860px;width:2040px;height:24px;background:#e6d6bd"></i>
+  <i style="left:420px;top:740px;width:150px;height:150px;border-radius:14px;background:#efeae2"></i>
+  <i style="left:360px;top:560px;width:180px;height:220px;border-radius:50%;background:#5f8f4e"></i>
+  <i style="left:470px;top:520px;width:150px;height:240px;border-radius:50%;background:#7aa95c"></i>
+  <i style="left:1600px;top:760px;width:260px;height:140px;border-radius:12px;background:#f7f4ee"></i>
+  <i style="left:1650px;top:700px;width:70px;height:80px;border-radius:50%;background:#f2c57c;opacity:.8"></i>
+  <i style="left:120px;top:150px;width:60px;height:60px;border-radius:50%;background:#fff;box-shadow:0 0 40px 20px #fff"></i>
+  <i style="left:250px;top:300px;width:40px;height:40px;border-radius:50%;background:#fff;box-shadow:0 0 30px 14px #fff"></i>
+</div>
+<div class="abs neon">${mark(250, "#d9fdf6", "#01f0c9")}</div>
+<div class="abs vig"></div>
+<div class="abs pill id">${mark(76)}<div><div class="nm">Gustav</div><div class="rl">${ROLE}</div></div></div>
+<div class="abs pill ct">${contact("c")}</div>`,
+
+  // 7. Blueprint: an engineering sheet. Title block top left, contact cells top right, and the
+  // mark drawn as a dimensioned technical drawing in the bottom-right corner.
+  "07-blueprint": `
+<style>
+body{background:#f3f9fc}
+.gr{inset:0;background-size:120px 120px,120px 120px,24px 24px,24px 24px;background-image:linear-gradient(to right,rgb(14 116 144/.12) 1px,transparent 1px),linear-gradient(to bottom,rgb(14 116 144/.12) 1px,transparent 1px),linear-gradient(to right,rgb(14 116 144/.05) 1px,transparent 1px),linear-gradient(to bottom,rgb(14 116 144/.05) 1px,transparent 1px)}
+.frame{inset:28px;border:2px solid rgb(14 116 144/.45)}
+.tb{left:28px;top:28px;display:grid;grid-template-columns:auto auto;border-right:2px solid rgb(14 116 144/.45);border-bottom:2px solid rgb(14 116 144/.45);background:rgb(243 249 252/.92)}
+.tb>div{padding:18px 26px;border-right:1px solid rgb(14 116 144/.3)}
+.lb{font-family:Mono;font-size:13px;letter-spacing:.22em;color:#0e7490;opacity:.8}
+.nm{font-size:64px;font-weight:800;letter-spacing:-.03em;line-height:1;margin-top:6px}
+.rl{font-family:Mono;font-size:16px;letter-spacing:.2em;color:var(--ink2);margin-top:10px}
+.cb{right:28px;top:28px;border-left:2px solid rgb(14 116 144/.45);border-bottom:2px solid rgb(14 116 144/.45);background:rgb(243 249 252/.92)}
+.cb>div{padding:16px 28px;font-family:Mono;font-size:25px;color:var(--ink2);font-weight:500}
+.cb>div+div{border-top:1px solid rgb(14 116 144/.3)}
+.cb .lb{display:block;margin-bottom:4px}
+.foot{left:56px;bottom:52px;font-family:Mono;font-size:14px;letter-spacing:.2em;color:#0e7490;opacity:.7}
+.dw{right:90px;bottom:80px}
+.dw text{font-family:Mono;fill:#0e7490}
+</style>
+<div class="abs gr"></div><div class="abs frame"></div>
+<div class="abs tb"><div style="display:flex;align-items:center">${mark(84)}</div>
+  <div><div class="lb">PROJECT</div><div class="nm">Gustav</div><div class="rl">${ROLE}</div></div></div>
+<div class="abs cb"><div><span class="lb">EMAIL</span>${EMAIL}</div><div><span class="lb">WEB</span>${SITE}</div></div>
+<svg class="abs dw" width="640" height="560" viewBox="0 0 640 560">
+  <g transform="translate(60 70) scale(1.15)" fill="rgb(13 148 136/.06)" stroke="#0e7490" stroke-width="1.6" stroke-linejoin="round">
+    <path d="M90 0h188.5v66H112l-39 39v95l17 17h91v67.5H65L0 219.5V90z"/>
+    <path d="M114 103.5h264.5V170h-106v176h-39l-33-33V170H114z"/>
+    <path d="M294 202.5h12.5l56 56-56 56H294v-24l32-32-32-32z" fill="rgb(13 148 136/.18)"/>
+    <path d="M356 290.5h92.5v24H356z" fill="rgb(13 148 136/.18)"/>
+  </g>
+  <g stroke="#0e7490" stroke-width="1" fill="none" opacity=".75">
+    <path d="M60 520v-30M576 520v-30M60 505h516"/><path d="M60 505l10-5v10zM576 505l-10-5v10z" fill="#0e7490"/>
+    <path d="M600 70h-20M600 468h-20M590 70v398"/><path d="M590 70l-5 10h10zM590 468l-5-10h10z" fill="#0e7490"/>
+    <path d="M60 173a60 60 0 0 1 43-43" stroke-dasharray="4 4"/>
+    <path d="M470 380l70-70h60" />
+    <circle cx="470" cy="380" r="4" fill="#0e7490"/>
+  </g>
+  <text x="318" y="540" font-size="15" text-anchor="middle">449</text>
+  <text x="620" y="274" font-size="15" text-anchor="middle" transform="rotate(90 620 274)">346</text>
+  <text x="30" y="135" font-size="14">45°</text>
+  <text x="548" y="300" font-size="14" letter-spacing="2">PROMPT</text>
+</svg>
+<div class="abs foot">DWG GTK-001 · SCALE 1:1 · REV A · SHEET 1/1</div>`,
+
+  // 8. Paper layers: stacked cut-paper waves in brand teals, the mark embossed into the front sheet.
+  "08-paper-layers": `
+<style>
+body{background:linear-gradient(180deg,#fbfdfd,#f2f8f7)}
+.waves{left:0;bottom:0}
+.waves path{filter:drop-shadow(0 -6px 10px rgb(15 23 42/.08))}
+.id{left:96px;top:88px;display:flex;align-items:center;gap:30px}
+.nm{font-size:76px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.rl{font-family:Mono;font-size:17px;letter-spacing:.24em;color:var(--teal2);margin-top:12px;font-weight:500}
+.ct{right:96px;top:96px;text-align:right}
+.c{font-size:26px;color:var(--ink2);line-height:1.65;font-weight:500}
+.em{right:120px;bottom:56px}
+</style>
+<svg class="abs waves" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <path fill="#e3f6f2" d="M0 700C320 640 520 760 860 720S1500 600 1920 640V1080H0z"/>
+  <path fill="#cdeee8" d="M0 800C300 760 560 860 900 820S1520 720 1920 760V1080H0z"/>
+  <path fill="#b3e6dd" d="M0 890C360 850 640 940 980 900S1560 800 1920 840V1080H0z"/>
+  <path fill="#99dcd1" d="M0 970C420 940 700 1010 1060 980S1600 900 1920 930V1080H0z"/>
+</svg>
+<svg class="abs" style="right:-60px;top:-40px" width="760" height="520" viewBox="0 0 760 520">
+  <path fill="#eef9f7" style="filter:drop-shadow(0 6px 10px rgb(15 23 42/.06))" d="M760 0V360C640 420 520 300 380 330S120 280 0 200V0z"/>
+</svg>
+<div class="abs em" style="filter:drop-shadow(-2px -2px 0 rgb(255 255 255/.7)) drop-shadow(2px 3px 2px rgb(15 23 42/.18))">${mark(130, "#99dcd1", "#5ec8b8")}</div>
+<div class="abs id">${mark(96)}<div><div class="nm">Gustav</div><div class="rl">${ROLE}</div></div></div>
+<div class="abs ct">${contact("c")}</div>`,
+
+  // 9. Full stack: "full-stack" made literal. Three isometric layers (UI, API, DB) wired together
+  // in the bottom-right corner, the mark printed on the top layer.
+  "09-full-stack": (() => {
+    const slab = (cx, cy, w, t, top, left, right) => {
+      const h = w / 2;
+      return `<polygon points="${cx},${cy - h} ${cx + w},${cy} ${cx},${cy + h} ${cx - w},${cy}" fill="${top}" stroke="rgb(14 116 144/.35)" stroke-width="1.2"/>
+<polygon points="${cx - w},${cy} ${cx},${cy + h} ${cx},${cy + h + t} ${cx - w},${cy + t}" fill="${left}"/>
+<polygon points="${cx},${cy + h} ${cx + w},${cy} ${cx + w},${cy + t} ${cx},${cy + h + t}" fill="${right}"/>`;
+    };
+    const cx = 1580, w = 150, t = 22, ys = [470, 685, 900];
+    const labels = ["UI · FRONTEND", "API · BACKEND", "DB · DATA"];
+    return `
+<style>
+body{background:radial-gradient(ellipse 60% 70% at 82% 70%,#e6f8f6,#f7f9fc 70%)}
+.fine{inset:0;background-size:24px 24px;background-image:linear-gradient(to right,rgb(15 23 42/.035) 1px,transparent 1px),linear-gradient(to bottom,rgb(15 23 42/.035) 1px,transparent 1px)}
+.id{left:96px;top:88px;display:flex;align-items:center;gap:30px}
+.nm{font-size:78px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.rl{font-family:Mono;font-size:17px;letter-spacing:.24em;color:var(--muted);margin-top:12px}
+.rl b{color:var(--teal);font-weight:700}
+.ct{right:96px;top:96px;text-align:right}
+.c{font-size:26px;color:var(--ink2);line-height:1.65;font-weight:500}
+svg text{font-family:Mono;font-size:15px;letter-spacing:3px;fill:#64748b}
+</style>
+<div class="abs fine"></div>
+<svg class="abs" style="left:0;top:0" width="1920" height="1080">
+  <ellipse cx="${cx}" cy="${ys[2] + 110}" rx="220" ry="60" fill="rgb(13 148 136/.10)" style="filter:blur(20px)"/>
+  ${[2, 1, 0].map((i) => slab(cx, ys[i], w, t, i === 0 ? "#ffffff" : i === 1 ? "#f2fbfa" : "#e7f7f4", i === 0 ? "#cdeee8" : i === 1 ? "#b9e5de" : "#a3dcd3", i === 0 ? "#e3f6f2" : i === 1 ? "#d2efea" : "#bfe8e1")).join("")}
+  ${[0, 1].map((i) => `<line x1="${cx}" y1="${ys[i] + w / 2 + t + 8}" x2="${cx}" y2="${ys[i + 1] - w / 2 - 8}" stroke="#06b6d4" stroke-width="2" stroke-dasharray="3 6"/><circle cx="${cx}" cy="${(ys[i] + w / 2 + t + ys[i + 1] - w / 2) / 2}" r="5" fill="#06b6d4"/>`).join("")}
+  <ellipse cx="${cx}" cy="${ys[0] + 4}" rx="74" ry="20" fill="rgb(13 148 136/.18)" style="filter:blur(6px)"/>
+  <g transform="translate(${cx - 70} ${ys[0] - w / 2 - 128}) scale(${140 / 449})">
+    <path fill="#0b0f14" d="M90 0h188.5v66H112l-39 39v95l17 17h91v67.5H65L0 219.5V90z"/>
+    <path fill="#0b0f14" d="M114 103.5h264.5V170h-106v176h-39l-33-33V170H114z"/>
+    <path fill="#0d9488" d="M294 202.5h12.5l56 56-56 56H294v-24l32-32-32-32z"/><path fill="#0d9488" d="M356 290.5h92.5v24H356z"/></g>
+  ${ys.map((y, i) => `<line x1="${cx - w - 16}" y1="${y + t / 2}" x2="${cx - w - 70}" y2="${y + t / 2}" stroke="#94a3b8" stroke-width="1"/><circle cx="${cx - w - 16}" cy="${y + t / 2}" r="3" fill="#94a3b8"/><text x="${cx - w - 80}" y="${y + t / 2 + 5}" text-anchor="end">${labels[i]}</text>`).join("")}
+</svg>
+<div class="abs id">${mark(96)}<div><div class="nm">Gustav</div><div class="rl"><b>FULL-STACK</b> DEVELOPER</div></div></div>
+<div class="abs ct">${contact("c")}</div>`;
+  })(),
+
+  // 10. Command palette: the site's ⌘K menu, opened top right and already searching for Gustav.
+  "10-command-palette": `
+<style>
+body{background:#f7f9fc}
+.glow{border-radius:50%}
+.fine{inset:0;background-size:48px 48px;background-image:linear-gradient(to right,rgb(15 23 42/.04) 1px,transparent 1px),linear-gradient(to bottom,rgb(15 23 42/.04) 1px,transparent 1px);-webkit-mask-image:linear-gradient(#000,rgb(0 0 0/.3))}
+.id{left:96px;top:88px;display:flex;align-items:center;gap:30px}
+.nm{font-size:78px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.rl{font-family:Mono;font-size:17px;letter-spacing:.24em;color:var(--muted);margin-top:12px}
+.pal{right:80px;top:64px;width:660px;background:rgb(255 255 255/.86);border:1px solid var(--line);border-radius:18px;box-shadow:0 30px 60px -28px rgb(15 23 42/.3);backdrop-filter:blur(14px);overflow:hidden;font-family:Mono}
+.in{display:flex;align-items:center;gap:14px;padding:20px 24px;border-bottom:1px solid var(--line);font-size:24px;color:var(--ink)}
+.in .q{color:var(--teal);font-weight:700}
+.in .cur{width:2px;height:28px;background:var(--cyan)}
+.in kbd{margin-left:auto;font-family:Mono;font-size:14px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:3px 8px;background:#f8fafc}
+.grp{padding:12px 24px 4px;font-size:13px;letter-spacing:.22em;color:#94a3b8}
+.row{display:flex;align-items:center;gap:16px;margin:4px 10px;padding:13px 16px;border-radius:10px;font-size:23px;color:var(--ink2)}
+.row.on{background:rgb(13 148 136/.09);box-shadow:inset 3px 0 0 var(--teal);color:var(--ink)}
+.row .ic{color:var(--teal);width:22px;text-align:center}
+.row .k{margin-left:auto;font-size:14px;color:#94a3b8}
+.row .ok{width:9px;height:9px;border-radius:50%;background:var(--em);box-shadow:0 0 0 4px rgb(16 185 129/.18)}
+.ft{display:flex;gap:22px;padding:12px 24px;border-top:1px solid var(--line);font-size:13px;color:#94a3b8;margin-top:8px}
+</style>
+<div class="abs glow" style="left:-300px;top:-340px;width:1100px;height:880px;background:radial-gradient(closest-side,rgb(16 185 129/.16),transparent)"></div>
+<div class="abs glow" style="right:-260px;top:-360px;width:1200px;height:900px;background:radial-gradient(closest-side,rgb(56 150 248/.14),transparent)"></div>
+<div class="abs glow" style="right:200px;bottom:-500px;width:1200px;height:800px;background:radial-gradient(closest-side,rgb(124 92 246/.07),transparent)"></div>
+<div class="abs fine"></div>
+<div class="abs id">${mark(96)}<div><div class="nm">Gustav</div><div class="rl">${ROLE}</div></div></div>
+<div class="abs pal">
+  <div class="in"><span class="q">&gt;</span>contact gustav<span class="cur"></span><kbd>⌘ K</kbd></div>
+  <div class="grp">CONTACT</div>
+  <div class="row on"><span class="ic">@</span>${EMAIL}<span class="k">↵ copy</span></div>
+  <div class="row"><span class="ic">↗</span>${SITE}<span class="k">↵ open</span></div>
+  <div class="row"><span class="ic"><span class="ok" style="display:inline-block"></span></span>available for work</div>
+  <div class="ft"><span>↑↓ navigate</span><span>↵ select</span><span>esc close</span></div>
+</div>`,
 };
 
 const browser = await chromium.launch({ executablePath: process.env.CHROME ?? "/opt/pw-browsers/chromium-1194/chrome-linux/chrome" });
