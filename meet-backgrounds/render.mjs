@@ -49,6 +49,44 @@ const contact = (cls = "") => `
   <div class="${cls} mono"><span class="p">@</span> ${EMAIL}</div>
   <div class="${cls} mono"><span class="p">↗</span> ${SITE}</div>`;
 
+
+// Out-of-focus rooms. Shapes are placed in canvas pixels inside a layer that overhangs the frame
+// by PAD, so the blur never pulls in empty edges. A lens-like finish (soft wall unevenness, light
+// falloff, camera grain) goes on top so the room matches a real webcam image.
+const PAD = 200;
+const sh = (x, y, w, h, css) =>
+  `<i style="position:absolute;display:block;left:${x + PAD}px;top:${y + PAD}px;width:${w}px;height:${h}px;${css}"></i>`;
+const room = (blur, base, shapes) =>
+  `<div class="abs" style="inset:-${PAD}px;filter:blur(${blur}px);background:${base}">${shapes.join("")}</div>`;
+// A framed print of the mark, defocused close to the wall it hangs on so it sits in the room.
+const framedMark = (x, y, w, blur, opts = {}) => {
+  const { frame = "#2b2e31", mat = "#efefed", ink = "#2b3035", opacity = 0.9 } = opts;
+  return `<div class="abs" style="left:${x}px;top:${y}px;width:${w}px;padding:${w * 0.03}px;background:${frame};filter:blur(${blur}px);opacity:${opacity};box-shadow:0 ${w * 0.04}px ${w * 0.08}px rgb(0 0 0/.25)">
+  <div style="background:${mat};padding:${w * 0.16}px ${w * 0.14}px">${mark(w * 0.46, ink, "#0d9488")}</div></div>`;
+};
+const bokeh = (x, y, r, color, a) =>
+  `<i style="position:absolute;display:block;left:${x - r}px;top:${y - r}px;width:${2 * r}px;height:${2 * r}px;border-radius:50%;background:radial-gradient(circle,${color} 0 62%,${color} 80%,transparent 100%);opacity:${a};filter:blur(2.5px)"></i>`;
+const lens = (vignette = 0.2) => `
+<svg class="abs" style="inset:0;mix-blend-mode:soft-light;opacity:.35" width="1920" height="1080"><filter id="lf"><feTurbulence type="fractalNoise" baseFrequency=".0022" numOctaves="3" seed="7"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#lf)"/></svg>
+<div class="abs" style="inset:0;background:radial-gradient(ellipse 78% 72% at 50% 46%,transparent 48%,rgb(28 26 24/${vignette}))"></div>
+<svg class="abs" style="inset:0;mix-blend-mode:overlay;opacity:.16" width="1920" height="1080"><filter id="gr"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch" seed="3"/><feColorMatrix type="saturate" values="0.25"/></filter><rect width="100%" height="100%" filter="url(#gr)"/></svg>`;
+// Frosted name and contact cards shared by the room backgrounds.
+const roomCards = () => `
+<style>
+.pill{background:rgb(255 255 255/.8);border:1px solid rgb(255 255 255/.9);box-shadow:0 18px 40px -22px rgb(20 22 26/.45),inset 0 1px 0 #fff;backdrop-filter:blur(16px);border-radius:28px}
+.id{left:80px;top:72px;display:flex;align-items:center;gap:28px;padding:26px 40px 26px 30px}
+.nm{font-size:66px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.rl{font-family:Mono;font-size:16px;letter-spacing:.22em;color:var(--muted);margin-top:10px}
+.ct{right:80px;top:72px;padding:24px 34px;text-align:right}
+.c{font-size:25px;color:var(--ink2);line-height:1.7;font-weight:500}
+</style>
+<div class="abs pill id">${mark(76)}<div><div class="nm">Gustav</div><div class="rl">${ROLE}</div></div></div>
+<div class="abs pill ct">${contact("c")}</div>`;
+const books = (x, y, h, colors, widths) => {
+  let cx = x;
+  return colors.map((c, i) => { const w = widths[i % widths.length], hh = h - (i * 37 % 5) * 9; const out = sh(cx, y + (h - hh), w, hh, `background:${c}`); cx += w + 3; return out; }).join("");
+};
+
 const variants = {
   // 1. Grid studio: the site's grid background, inverted to light, with soft teal glows.
   "01-grid-studio": `
@@ -379,6 +417,125 @@ body{background:#f7f9fc}
   <div class="row"><span class="ic"><span class="ok" style="display:inline-block"></span></span>available for work</div>
   <div class="ft"><span>↑↓ navigate</span><span>↵ select</span><span>esc close</span></div>
 </div>`,
+
+  // 11. Window office: cool daylight from a window on the left, a plant by the glass, a shelf and
+  // a framed print of the mark on the right. Plain, softly lit wall in the middle.
+  "11-window-office": `
+${room(58, "linear-gradient(90deg,#cfd2d3 0%,#c6c8c8 38%,#bcbdbc 70%,#b1b1af 100%)", [
+  sh(-200, -200, 2400, 330, "background:linear-gradient(#a9abac,transparent)"),
+  sh(-200, 930, 2400, 400, "background:linear-gradient(#a7a29b,#98928a)"),
+  sh(-200, 40, 620, 860, "background:#aab0b4"),
+  sh(-180, 70, 580, 800, "background:linear-gradient(180deg,#f4f7f9,#eef2f4 50%,#dfe7e2)"),
+  sh(-180, 470, 580, 400, "background:linear-gradient(#cdd9cb,#b9cbb6);opacity:.65"),
+  sh(170, 70, 22, 800, "background:#9aa2a7"),
+  sh(-180, 440, 580, 18, "background:#9aa2a7"),
+  sh(380, 30, 150, 900, "background:#e3e5e5;opacity:.75"),
+  sh(420, 120, 520, 760, "border-radius:50%;background:#dcdfe0;opacity:.6"),
+  sh(330, 470, 170, 230, "border-radius:50%;background:#56724f"),
+  sh(420, 420, 160, 260, "border-radius:50%;background:#6e8f62"),
+  sh(290, 600, 150, 180, "border-radius:50%;background:#4d6847"),
+  sh(370, 760, 130, 160, "border-radius:10px;background:#ece9e4"),
+  sh(1540, 540, 460, 600, "background:#8c8277"),
+  sh(1560, 560, 420, 160, "background:#6f665d"),
+  sh(1560, 740, 420, 170, "background:#6f665d"),
+  books(1575, 590, 125, ["#34444f", "#c4b79c", "#5f8378", "#b19d82", "#2f3a43", "#d8d2c6"], [34, 28, 40, 30]),
+  books(1590, 770, 135, ["#a9927a", "#3e5160", "#cfc7b8", "#6f8f86", "#8b6e5a"], [30, 42, 26, 36]),
+  sh(1820, 600, 120, 110, "border-radius:50%;background:#7a9a6c"),
+  sh(1690, 440, 120, 100, "border-radius:50%;background:#f6e2bd;opacity:.75"),
+])}
+${framedMark(1500, 270, 270, 13, { opacity: 0.8 })}
+${lens(0.18)}${roomCards()}`,
+
+  // 12. Evening lamp: a warm greige room, bookshelf in shadow on the left, a floor lamp glowing on
+  // the right with out-of-focus highlights.
+  "12-evening-lamp": `
+${room(62, "linear-gradient(90deg,#9f978e 0%,#b3aca3 35%,#b9b2a9 62%,#aaa197 100%)", [
+  sh(-200, -200, 2400, 360, "background:linear-gradient(#8d857c,transparent)"),
+  sh(-200, 940, 2400, 400, "background:linear-gradient(#958b80,#81776c)"),
+  sh(-200, 80, 520, 1200, "background:#4a423b"),
+  sh(-180, 100, 470, 200, "background:#3a332d"), sh(-180, 330, 470, 200, "background:#3a332d"), sh(-180, 560, 470, 200, "background:#3a332d"),
+  books(-160, 140, 150, ["#7a5c45", "#a08a6b", "#56504a", "#8f6f52", "#6a7b72", "#b49a74"], [30, 38, 26, 34]),
+  books(-150, 370, 150, ["#9b8467", "#5a6a62", "#a5793f", "#7f6a58", "#c2ab86"], [36, 26, 40, 30]),
+  sh(1380, 160, 760, 760, "border-radius:50%;background:radial-gradient(closest-side,rgb(255 214 150/.7),transparent)"),
+  sh(1610, 420, 190, 150, "border-radius:40% 40% 8px 8px;background:#fbe8c8"),
+  sh(1700, 570, 10, 520, "background:#3c3732"),
+  sh(1480, 790, 620, 420, "border-radius:60px;background:#6c645c"),
+  sh(1500, 760, 260, 160, "border-radius:40px;background:#7f766d"),
+  sh(600, 180, 720, 640, "border-radius:50%;background:#bdb6ad;opacity:.55"),
+])}
+<div class="abs" style="inset:0">
+  ${bokeh(1640, 520, 34, "#ffe6bc", 0.45)}${bokeh(1760, 470, 22, "#ffe0ad", 0.4)}${bokeh(1590, 610, 18, "#ffd9a0", 0.35)}
+  ${bokeh(150, 300, 20, "#e9cfa6", 0.25)}${bokeh(90, 520, 26, "#dcc19a", 0.2)}
+</div>
+${framedMark(350, 300, 230, 13, { frame: "#3a332d", mat: "#e9e3d9", opacity: 0.8 })}
+${lens(0.26)}${roomCards()}`,
+
+  // 13. Concrete loft: cool ash concrete, a black steel window on the right, pendant lights and a
+  // large plant on the left, the mark painted on the concrete.
+  "13-concrete-loft": `
+${room(56, "linear-gradient(90deg,#9ea1a2 0%,#a9acad 40%,#b0b3b4 70%,#a6aaac 100%)", [
+  sh(-200, -200, 2400, 330, "background:linear-gradient(#8e9192,transparent)"),
+  sh(-200, 950, 2400, 400, "background:linear-gradient(#8b8b89,#7a7a78)"),
+  sh(1376, 0, 820, 940, "background:#2b2f33"),
+  sh(1400, 40, 146, 261, "background:#e3e9ec"), sh(1590, 40, 146, 261, "background:#e8eef0"), sh(1780, 40, 146, 261, "background:#e1e7ea"), sh(1400, 345, 146, 261, "background:#dfe6e9"), sh(1590, 345, 146, 261, "background:#e6ecee"), sh(1780, 345, 146, 261, "background:#dbe2e5"), sh(1400, 650, 146, 261, "background:#cfd8d4"), sh(1590, 650, 146, 261, "background:#d6ded9"), sh(1780, 650, 146, 261, "background:#ccd5d1"),
+  sh(1000, 100, 520, 820, "border-radius:50%;background:#c4c8ca;opacity:.6"),
+  sh(-160, 560, 300, 360, "border-radius:50%;background:#3d5644"),
+  sh(40, 500, 260, 300, "border-radius:50%;background:#4f6b53"),
+  sh(-60, 700, 260, 300, "border-radius:50%;background:#34493a"),
+  sh(80, 860, 170, 200, "border-radius:16px;background:#5b5e60"),
+])}
+<div class="abs" style="inset:0">
+  <div class="abs" style="left:300px;top:0;width:3px;height:330px;background:#2b2f33;filter:blur(18px);opacity:.6"></div>
+  <div class="abs" style="left:520px;top:0;width:3px;height:270px;background:#2b2f33;filter:blur(18px);opacity:.6"></div>
+  ${bokeh(302, 352, 30, "#ffe3b3", 0.6)}${bokeh(522, 292, 24, "#ffe3b3", 0.55)}
+  <div class="abs" style="left:302px;top:352px;width:0;height:0;box-shadow:0 0 120px 60px rgb(255 220 170/.28)"></div>
+  <div class="abs" style="left:522px;top:292px;width:0;height:0;box-shadow:0 0 100px 50px rgb(255 220 170/.24)"></div>
+</div>
+<div class="abs" style="left:240px;top:550px;filter:blur(18px);opacity:.4">${mark(230, "#2f3437", "#0d9488")}</div>
+${lens(0.22)}${roomCards()}`,
+
+  // 14. Bookshelf: built-in light-oak shelving at both edges with books, plants and ceramics, a
+  // soft ceiling downlight on the plain wall in the middle, the mark framed on a shelf.
+  "14-bookshelf": `
+${room(58, "linear-gradient(90deg,#b9b2a9 0%,#c5beb5 30%,#cac4bb 55%,#bfb8af 100%)", [
+  sh(-200, -200, 2400, 330, "background:linear-gradient(#aaa39a,transparent)"),
+  sh(-200, 960, 2400, 400, "background:linear-gradient(#a1968a,#8f8478)"),
+  sh(700, -120, 520, 760, "border-radius:50%;background:radial-gradient(closest-side,rgb(240 234 226/.9),transparent)"),
+  sh(-200, 120, 600, 1100, "background:#b0957a"),
+  sh(-180, 140, 560, 200, "background:#8f775f"), sh(-180, 380, 560, 210, "background:#8f775f"), sh(-180, 630, 560, 210, "background:#8f775f"),
+  books(-160, 180, 150, ["#e7e2d8", "#3f5361", "#b7a284", "#d9cfbf", "#6b8a80"], [30, 26, 38, 32]),
+  sh(120, 220, 110, 120, "border-radius:50%;background:#eceae6"),
+  sh(230, 180, 130, 160, "border-radius:50%;background:#6f8f5f"),
+  books(-150, 420, 160, ["#a88d6c", "#2f3d47", "#cbbfa9", "#8a6d55", "#e3ddd1", "#56736a"], [34, 28, 40, 26]),
+  sh(-160, 690, 200, 140, "border-radius:50%;background:#e6e2db"),
+  sh(100, 660, 240, 170, "border-radius:50%;background:#5f7f52"),
+  sh(1520, 120, 600, 1100, "background:#b0957a"),
+  sh(1540, 140, 560, 200, "background:#8f775f"), sh(1540, 380, 560, 210, "background:#8f775f"), sh(1540, 630, 560, 210, "background:#8f775f"),
+  books(1560, 170, 160, ["#d9cfbf", "#506b75", "#b39a7a", "#2c3a44", "#e7e2d8", "#9b7e62"], [32, 40, 26, 30]),
+  sh(1820, 190, 140, 150, "border-radius:50%;background:#78985f"),
+  sh(1580, 690, 150, 140, "border-radius:50%;background:#ecebe7"),
+  books(1760, 660, 170, ["#7b8f86", "#c4b293", "#3d4a52", "#a58566"], [36, 30, 42]),
+])}
+${framedMark(1590, 390, 220, 13, { frame: "#6e5a46", mat: "#f2efe9", opacity: 0.8 })}
+${lens(0.2)}${roomCards()}`,
+
+  // 15. Blinds light: a minimal warm-ash wall with morning sun falling through blinds on the right,
+  // a sideboard with a framed print of the mark, and a plant at the left edge.
+  "15-blinds-light": `
+${room(52, "linear-gradient(90deg,#aaa49d 0%,#b7b1aa 40%,#bcb6af 70%,#b2aca5 100%)", [
+  sh(-200, -200, 2400, 330, "background:linear-gradient(#9b958e,transparent)"),
+  sh(-200, 960, 2400, 400, "background:linear-gradient(#9f978d,#8e867c)"),
+  sh(-180, 420, 380, 520, "border-radius:50%;background:#4e5f4b"),
+  sh(-100, 300, 260, 380, "border-radius:50%;background:#63775c"),
+  sh(1280, 860, 900, 400, "background:#e2ddd5"),
+  sh(1300, 900, 860, 30, "background:#cfc8bd"),
+  sh(1900, 700, 120, 200, "border-radius:50% 50% 12px 12px;background:#d9d3c9"),
+])}
+<div class="abs" style="inset:0;filter:blur(18px);opacity:.75">
+  <div class="abs" style="left:1060px;top:120px;width:900px;height:720px;transform:skewY(-14deg);background:repeating-linear-gradient(180deg,#efe2cc 0 34px,transparent 34px 58px);-webkit-mask-image:radial-gradient(ellipse 60% 60% at 60% 50%,#000 40%,transparent 100%)"></div>
+</div>
+${framedMark(1510, 630, 220, 13, { frame: "#2f2c29", mat: "#f3f0ea", opacity: 0.8 })}
+${lens(0.2)}${roomCards()}`,
 };
 
 const browser = await chromium.launch({ executablePath: process.env.CHROME ?? "/opt/pw-browsers/chromium-1194/chrome-linux/chrome" });

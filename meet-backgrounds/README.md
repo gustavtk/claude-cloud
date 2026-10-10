@@ -17,6 +17,19 @@ Logo, name and role sit top left; email and website top right; the middle stays 
 | `08-paper-layers.png` | Stacked cut-paper waves in brand teals, the mark embossed into the front sheet |
 | `09-full-stack.png` | "Full-stack" made literal: UI, API and DB layers stacked bottom right, the mark on top |
 | `10-command-palette.png` | The site's ⌘K menu, open top right on your contact details |
+| `11-window-office.png` | Out-of-focus office: cool daylight window and plant left, shelf and framed mark right |
+| `12-evening-lamp.png` | Warm greige room: shadowed bookshelf left, glowing floor lamp right |
+| `13-concrete-loft.png` | Ash concrete loft: steel window right, pendant lights and plant left, mark painted on the wall |
+| `14-bookshelf.png` | Light-oak shelving at both edges, soft downlight on the wall behind you, mark framed on a shelf |
+| `15-blinds-light.png` | Minimal warm-ash wall with sun through blinds, plant left, framed mark on a sideboard |
+
+The room backgrounds (06, 11–15) keep the area behind your head a plain, mid-light wall so the
+edges of your hair and hands blend instead of glitching; every object sits at the edges. They
+carry camera grain so they match a webcam image and don't band once Meet compresses the video.
+
+**For the cleanest edges:** light your face from the front (a window or lamp facing you, never
+behind you), sit about an arm's length from the camera with some space between you and your real
+wall, wear a top that contrasts with the background, and keep the camera at eye level.
 
 **Upload the files in this folder, not `mirrored/`.** Meet mirrors only your own self-view; everyone
 else sees the background exactly as uploaded, so the text reads correctly for them. The copies in
