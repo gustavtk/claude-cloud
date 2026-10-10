@@ -157,26 +157,40 @@ pre{font-family:Mono;font-size:23px;line-height:1.7;padding:20px 26px 24px;color
 <span class="ln">3</span>  <span class="pr">site</span>:  <span class="s">"${SITE}"</span>,
 <span class="ln">4</span>};</pre></div>`,
 
-  // 5. Glass: frosted cards over the site's grid and a calm teal/cyan glow, kept quiet.
+  // 5. Glass: frosted cards over a light take on the site's hero: its blue/violet/emerald glow
+  // field fading into the grid. The mark sits as a quiet watermark bottom right, clear of the middle.
   "05-glass": `
 <style>
-body{background:#f6f9fb}
-.grid{inset:0;background-size:48px 48px;background-image:linear-gradient(to right,rgb(15 23 42/.045) 1px,transparent 1px),linear-gradient(to bottom,rgb(15 23 42/.045) 1px,transparent 1px);
-  -webkit-mask-image:linear-gradient(180deg,#000 0%,rgb(0 0 0/.35) 45%,rgb(0 0 0/.35) 70%,#000 100%)}
-.g{border-radius:50%}
-.pill{background:rgb(255 255 255/.7);border:1px solid rgb(255 255 255/.95);box-shadow:0 18px 40px -24px rgb(15 23 42/.22),0 0 0 1px rgb(15 23 42/.04),inset 0 1px 0 #fff;backdrop-filter:blur(14px);border-radius:28px}
+body{background:#f7f9fc}
+.field{left:0;right:0;top:0;height:760px;overflow:hidden;filter:blur(90px) saturate(1.05)}
+.field i{position:absolute;border-radius:50%;display:block}
+.fade{left:0;right:0;top:0;height:780px;background:linear-gradient(rgb(247 249 252/0) 0%,rgb(247 249 252/.18) 25%,rgb(247 249 252/.45) 45%,rgb(247 249 252/.75) 65%,rgb(247 249 252/.94) 82%,#f7f9fc 100%)}
+.wash{left:0;right:0;bottom:0;height:420px;background:linear-gradient(transparent,rgb(16 185 129/.05))}
+.grid{inset:0;background-size:48px 48px;background-image:linear-gradient(to right,rgb(15 23 42/.05) 1px,transparent 1px),linear-gradient(to bottom,rgb(15 23 42/.05) 1px,transparent 1px);
+  -webkit-mask-image:radial-gradient(ellipse 120% 100% at 50% 0%,#000 35%,rgb(0 0 0/.55) 100%)}
+.pill{background:rgb(255 255 255/.72);border:1px solid rgb(255 255 255/.95);box-shadow:0 18px 40px -24px rgb(15 23 42/.25),0 0 0 1px rgb(15 23 42/.04),inset 0 1px 0 #fff;backdrop-filter:blur(14px);border-radius:28px}
 .id{left:80px;top:72px;display:flex;align-items:center;gap:28px;padding:26px 40px 26px 30px}
 .nm{font-size:66px;font-weight:800;letter-spacing:-.03em;line-height:1}
 .rl{font-family:Mono;font-size:16px;letter-spacing:.22em;color:var(--muted);margin-top:10px}
 .ct{right:80px;top:72px;padding:24px 34px;text-align:right}
 .c{font-size:25px;color:var(--ink2);line-height:1.7;font-weight:500}
-.fade{left:0;right:0;bottom:0;height:420px;background:linear-gradient(transparent,rgb(246 249 251/.4))}
+.wm{right:96px;bottom:84px}
 </style>
-<div class="abs g" style="left:-320px;top:-360px;width:1100px;height:900px;background:radial-gradient(closest-side,rgb(1 240 201/.2),transparent)"></div>
-<div class="abs g" style="right:-320px;top:-380px;width:1000px;height:820px;background:radial-gradient(closest-side,rgb(6 182 212/.13),transparent)"></div>
-<div class="abs g" style="left:-200px;bottom:-560px;width:1300px;height:900px;background:radial-gradient(closest-side,rgb(45 212 191/.16),transparent)"></div>
-<div class="abs g" style="right:-260px;bottom:-560px;width:1300px;height:900px;background:radial-gradient(closest-side,rgb(56 189 248/.13),transparent)"></div>
+<div class="abs field">
+  <i style="left:-160px;top:-260px;width:900px;height:640px;background:rgb(16 185 129/.30)"></i>
+  <i style="left:520px;top:-320px;width:900px;height:600px;background:rgb(56 150 248/.24)"></i>
+  <i style="left:980px;top:-200px;width:700px;height:460px;background:rgb(124 92 246/.14)"></i>
+  <i style="right:-200px;top:-280px;width:900px;height:640px;background:rgb(6 182 212/.26)"></i>
+</div>
+<div class="abs fade"></div><div class="abs wash"></div>
 <div class="abs grid"></div>
+<div class="abs wm"><svg viewBox="0 0 449 346" style="height:250px;display:block" aria-hidden>
+  <defs><linearGradient id="wg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0f766e" stop-opacity=".1"/><stop offset="1" stop-color="#0e7490" stop-opacity=".07"/></linearGradient></defs>
+  <path fill="url(#wg)" d="M90 0h188.5v66H112l-39 39v95l17 17h91v67.5H65L0 219.5V90z"/>
+  <path fill="url(#wg)" d="M114 103.5h264.5V170h-106v176h-39l-33-33V170H114z"/>
+  <path fill="#0d9488" fill-opacity=".22" d="M294 202.5h12.5l56 56-56 56H294v-24l32-32-32-32z"/>
+  <path fill="#0d9488" fill-opacity=".22" d="M356 290.5h92.5v24H356z"/>
+</svg></div>
 <div class="abs pill id">${mark(76)}<div><div class="nm">Gustav</div><div class="rl">FULL-STACK DEVELOPER</div></div></div>
 <div class="abs pill ct">${contact("c")}</div>`,
 };
