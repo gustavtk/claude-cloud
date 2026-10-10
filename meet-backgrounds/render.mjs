@@ -556,15 +556,14 @@ body{background:#939898}
 .field i{position:absolute;border-radius:50%;display:block}
 .fade{left:0;right:0;top:0;height:780px;background:linear-gradient(rgb(147 152 152/0) 0%,rgb(147 152 152/.18) 25%,rgb(147 152 152/.45) 45%,rgb(147 152 152/.75) 65%,rgb(147 152 152/.94) 82%,#939898 100%)}
 .wash{left:0;right:0;bottom:0;height:420px;background:linear-gradient(transparent,rgb(144 129 110/.3))}
-.grid{inset:0;background-size:48px 48px;background-image:linear-gradient(to right,rgb(20 22 24/.05) 1px,transparent 1px),linear-gradient(to bottom,rgb(20 22 24/.05) 1px,transparent 1px);
-  -webkit-mask-image:radial-gradient(ellipse 120% 100% at 50% 0%,#000 35%,rgb(0 0 0/.55) 100%)}
-.pill{background:rgb(40 44 46/.62);border:1px solid rgb(255 255 255/.14);box-shadow:0 18px 40px -22px rgb(10 12 14/.6),inset 0 1px 0 rgb(255 255 255/.12);backdrop-filter:blur(14px);border-radius:28px}
+.grid{inset:0;background-size:48px 48px;background-image:linear-gradient(to right,rgb(20 22 24/.13) 1px,transparent 1px),linear-gradient(to bottom,rgb(20 22 24/.13) 1px,transparent 1px);
+  -webkit-mask-image:radial-gradient(ellipse 120% 100% at 50% 0%,#000 45%,rgb(0 0 0/.8) 100%)}
+.pill{background:rgb(255 255 255/.8);border:1px solid rgb(255 255 255/.9);box-shadow:0 18px 40px -22px rgb(20 22 26/.45),inset 0 1px 0 #fff;backdrop-filter:blur(14px);border-radius:28px}
 .id{left:80px;top:72px;display:flex;align-items:center;gap:28px;padding:26px 40px 26px 30px}
 .nm{font-size:66px;font-weight:800;letter-spacing:-.03em;line-height:1}
-.rl{font-family:Mono;font-size:16px;letter-spacing:.22em;color:#d3d8da;margin-top:10px}
+.rl{font-family:Mono;font-size:16px;letter-spacing:.22em;color:var(--muted);margin-top:10px}
 .ct{right:80px;top:72px;padding:24px 34px;text-align:right}
-.c{font-size:25px;color:#ffffff;line-height:1.7;font-weight:500}
-.c .p{color:#5eead4}
+.c{font-size:25px;color:var(--ink2);line-height:1.7;font-weight:500}
 .wm{right:56px;bottom:48px}
 </style>
 <div class="abs field">
@@ -582,8 +581,7 @@ body{background:#939898}
   <path fill="#0d9488" fill-opacity=".2" d="M294 202.5h12.5l56 56-56 56H294v-24l32-32-32-32z"/>
   <path fill="#0d9488" fill-opacity=".2" d="M356 290.5h92.5v24H356z"/>
 </svg></div>
-<div class="abs" style="inset:0;background:rgb(24 26 28/.3)"></div>
-<div class="abs pill id">${mark(76, "#ffffff", "#2dd4bf")}<div><div class="nm" style="color:#ffffff">Gustav</div><div class="rl">FULL-STACK DEVELOPER</div></div></div>
+<div class="abs pill id">${mark(76)}<div><div class="nm">Gustav</div><div class="rl">FULL-STACK DEVELOPER</div></div></div>
 <div class="abs pill ct">${contact("c")}</div>`,
 
 };
