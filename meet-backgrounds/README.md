@@ -23,7 +23,7 @@ Logo, name and role sit top left; email and website top right; the middle stays 
 | `14-bookshelf.png` | Light-oak shelving at both edges, soft downlight on the wall behind you, mark framed on a shelf |
 | `15-blinds-light.png` | Minimal warm-ash wall with sun through blinds, plant left, framed mark on a sideboard |
 | `16-photo-office.png` | A generated photo of a grey home office (Higgsfield, Z Image): laptops removed, re-blurred, mark framed above the shelf |
-| `17-glass-ash.png` | The Glass layout in the photo office colours: ash-grey wall, cool window light left, warm lamp glow right, ash-grey cards |
+| `17-glass-ash.png` | The Glass layout in the photo office colours: ash-grey wall, cool window light left, warm lamp glow right, white text on dark ash cards |
 
 The room backgrounds (06, 11–16) keep the area behind your head a plain, mid-light wall so the
 edges of your hair and hands blend instead of glitching; every object sits at the edges. They
