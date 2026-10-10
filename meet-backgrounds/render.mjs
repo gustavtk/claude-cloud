@@ -203,7 +203,7 @@ body{background:#f7f9fc}
 body{background:#b9b9b7}
 .room{inset:-160px;filter:blur(70px)}
 .room i{position:absolute;display:block;border-radius:40px}
-.sign{right:-150px;bottom:-130px;filter:blur(12px);opacity:.22}
+.sign{right:-380px;bottom:-130px;filter:blur(12px);opacity:.22}
 .vig{inset:0;background:radial-gradient(ellipse 75% 70% at 52% 48%,transparent 45%,rgb(40 42 46/.22))}
 .grain{inset:0;opacity:.07;mix-blend-mode:multiply}
 .pill{background:rgb(255 255 255/.8);border:1px solid rgb(255 255 255/.9);box-shadow:0 18px 40px -22px rgb(20 22 26/.45),inset 0 1px 0 #fff;backdrop-filter:blur(16px);border-radius:28px}
