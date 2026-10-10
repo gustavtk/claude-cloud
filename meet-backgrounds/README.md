@@ -11,7 +11,7 @@ Logo, name and role sit top left; email and website top right; the middle stays 
 | `02-access-pass.png` | The hero's lanyard access pass hanging top left |
 | `03-browser.png` | A light browser window: your brand in the tab, gustavtk.com in the address bar |
 | `04-code.png` | Your contact details as a `contact.ts` snippet in a small editor card |
-| `05-glass.png` | Frosted-glass cards over a soft teal and cyan glow |
+| `05-glass.png` | Frosted-glass cards over the site grid and a calm teal glow (role: Full-Stack Developer) |
 
 **Upload the files in this folder, not `mirrored/`.** Meet mirrors only your own self-view; everyone
 else sees the background exactly as uploaded, so the text reads correctly for them. The copies in

@@ -157,25 +157,27 @@ pre{font-family:Mono;font-size:23px;line-height:1.7;padding:20px 26px 24px;color
 <span class="ln">3</span>  <span class="pr">site</span>:  <span class="s">"${SITE}"</span>,
 <span class="ln">4</span>};</pre></div>`,
 
-  // 5. Glass: soft teal/cyan aurora at the foot, frosted pills holding the details.
+  // 5. Glass: frosted cards over the site's grid and a calm teal/cyan glow, kept quiet.
   "05-glass": `
 <style>
-body{background:#f7fafc;overflow:hidden}
-.blob{border-radius:50%;filter:blur(110px)}
-.pill{background:rgb(255 255 255/.62);border:1px solid rgb(255 255 255/.9);box-shadow:0 18px 40px -22px rgb(15 23 42/.25),inset 0 1px 0 #fff;backdrop-filter:blur(18px);border-radius:28px}
+body{background:#f6f9fb}
+.grid{inset:0;background-size:48px 48px;background-image:linear-gradient(to right,rgb(15 23 42/.045) 1px,transparent 1px),linear-gradient(to bottom,rgb(15 23 42/.045) 1px,transparent 1px);
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,rgb(0 0 0/.35) 45%,rgb(0 0 0/.35) 70%,#000 100%)}
+.g{border-radius:50%}
+.pill{background:rgb(255 255 255/.7);border:1px solid rgb(255 255 255/.95);box-shadow:0 18px 40px -24px rgb(15 23 42/.22),0 0 0 1px rgb(15 23 42/.04),inset 0 1px 0 #fff;backdrop-filter:blur(14px);border-radius:28px}
 .id{left:80px;top:72px;display:flex;align-items:center;gap:28px;padding:26px 40px 26px 30px}
 .nm{font-size:66px;font-weight:800;letter-spacing:-.03em;line-height:1}
-.rl{font-family:Mono;font-size:16px;letter-spacing:.24em;color:var(--muted);margin-top:10px}
+.rl{font-family:Mono;font-size:16px;letter-spacing:.22em;color:var(--muted);margin-top:10px}
 .ct{right:80px;top:72px;padding:24px 34px;text-align:right}
 .c{font-size:25px;color:var(--ink2);line-height:1.7;font-weight:500}
-.lines{left:0;right:0;bottom:0;height:520px;opacity:.5;background:repeating-linear-gradient(0deg,rgb(255 255 255/.55) 0 1px,transparent 1px 26px);-webkit-mask-image:linear-gradient(transparent,#000)}
+.fade{left:0;right:0;bottom:0;height:420px;background:linear-gradient(transparent,rgb(246 249 251/.4))}
 </style>
-<div class="abs blob" style="left:-120px;bottom:-360px;width:900px;height:640px;background:#5eead4;opacity:.55"></div>
-<div class="abs blob" style="left:620px;bottom:-420px;width:900px;height:620px;background:#67e8f9;opacity:.45"></div>
-<div class="abs blob" style="right:-200px;bottom:-320px;width:800px;height:600px;background:#6ee7b7;opacity:.4"></div>
-<div class="abs blob" style="left:-200px;top:-260px;width:700px;height:500px;background:#ccfbf1;opacity:.9"></div>
-<div class="abs lines"></div>
-<div class="abs pill id">${mark(76)}<div><div class="nm">Gustav</div><div class="rl">WEB DEVELOPER</div></div></div>
+<div class="abs g" style="left:-320px;top:-360px;width:1100px;height:900px;background:radial-gradient(closest-side,rgb(1 240 201/.2),transparent)"></div>
+<div class="abs g" style="right:-320px;top:-380px;width:1000px;height:820px;background:radial-gradient(closest-side,rgb(6 182 212/.13),transparent)"></div>
+<div class="abs g" style="left:-200px;bottom:-560px;width:1300px;height:900px;background:radial-gradient(closest-side,rgb(45 212 191/.16),transparent)"></div>
+<div class="abs g" style="right:-260px;bottom:-560px;width:1300px;height:900px;background:radial-gradient(closest-side,rgb(56 189 248/.13),transparent)"></div>
+<div class="abs grid"></div>
+<div class="abs pill id">${mark(76)}<div><div class="nm">Gustav</div><div class="rl">FULL-STACK DEVELOPER</div></div></div>
 <div class="abs pill ct">${contact("c")}</div>`,
 };
 
