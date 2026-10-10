@@ -91,6 +91,44 @@ const books = (x, y, h, colors, widths) => {
   return colors.map((c, i) => { const w = widths[i % widths.length], hh = h - (i * 37 % 5) * 9; const out = sh(cx, y + (h - hh), w, hh, `background:${c}`); cx += w + 3; return out; }).join("");
 };
 
+
+// The ash series (17 onward): the photo office palette with Glass's frosted white cards.
+const ashBase = () => `
+<style>
+body{background:#939898}
+.afield{left:0;right:0;top:0;height:760px;overflow:hidden;filter:blur(90px)}
+.afield i{position:absolute;border-radius:50%;display:block}
+</style>
+<div class="abs afield">
+  <i style="left:-160px;top:-260px;width:900px;height:640px;background:rgb(189 193 192/.75)"></i>
+  <i style="left:520px;top:-320px;width:900px;height:600px;background:rgb(160 166 166/.55)"></i>
+  <i style="left:980px;top:-200px;width:700px;height:460px;background:rgb(207 182 155/.35)"></i>
+  <i style="right:-200px;top:-280px;width:900px;height:640px;background:rgb(207 182 155/.5)"></i>
+</div>
+<div class="abs" style="left:0;right:0;top:0;height:780px;background:linear-gradient(rgb(147 152 152/0) 0%,rgb(147 152 152/.18) 25%,rgb(147 152 152/.45) 45%,rgb(147 152 152/.75) 65%,rgb(147 152 152/.94) 82%,#939898 100%)"></div>
+<div class="abs" style="left:0;right:0;bottom:0;height:420px;background:linear-gradient(transparent,rgb(144 129 110/.3))"></div>`;
+const ashCards = () => `
+<style>
+.pill{background:rgb(255 255 255/.8);border:1px solid rgb(255 255 255/.9);box-shadow:0 18px 40px -22px rgb(20 22 26/.45),inset 0 1px 0 #fff;backdrop-filter:blur(14px);border-radius:28px}
+.id{left:80px;top:72px;display:flex;align-items:center;gap:28px;padding:26px 40px 26px 30px}
+.nm{font-size:66px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.rl{font-family:Mono;font-size:16px;letter-spacing:.22em;color:var(--muted);margin-top:10px}
+.ct{right:80px;top:72px;padding:24px 34px;text-align:right}
+.c{font-size:25px;color:var(--ink2);line-height:1.7;font-weight:500}
+</style>
+<div class="abs pill id">${mark(76)}<div><div class="nm">Gustav</div><div class="rl">${ROLE}</div></div></div>
+<div class="abs pill ct">${contact("c")}</div>`;
+// Seeded randomness so every render of a design comes out the same.
+const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+const MARK_PATHS = [
+  "M90 0h188.5v66H112l-39 39v95l17 17h91v67.5H65L0 219.5V90z",
+  "M114 103.5h264.5V170h-106v176h-39l-33-33V170H114z",
+  "M294 202.5h12.5l56 56-56 56H294v-24l32-32-32-32z",
+  "M356 290.5h92.5v24H356z",
+];
+const markSvgData = (fill = "#000") =>
+  "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 449 346">${MARK_PATHS.map((d) => `<path fill="${fill}" d="${d}"/>`).join("")}</svg>`);
+
 const variants = {
   // 1. Grid studio: the site's grid background, inverted to light, with soft teal glows.
   "01-grid-studio": `
@@ -584,6 +622,210 @@ body{background:#939898}
 <div class="abs pill id">${mark(76)}<div><div class="nm">Gustav</div><div class="rl">FULL-STACK DEVELOPER</div></div></div>
 <div class="abs pill ct">${contact("c")}</div>`,
 
+
+  // 18. Topographic: contour lines rising to a summit in the bottom-right corner, where the mark
+  // stands like a survey marker, with a smaller hill at the bottom left.
+  "18-topographic": (() => {
+    const ring = (cx, cy, r, i, k) => {
+      const pts = [];
+      for (let a = 0; a <= 360; a += 4) {
+        const t = (a * Math.PI) / 180;
+        const rr = r * (1 + 0.13 * Math.sin(3 * t + i * 0.45 + k) + 0.07 * Math.sin(5 * t + 1.3 + k) + 0.04 * Math.sin(9 * t + i));
+        pts.push(`${(cx + rr * Math.cos(t)).toFixed(1)},${(cy + rr * 0.78 * Math.sin(t)).toFixed(1)}`);
+      }
+      return `<polygon points="${pts.join(" ")}" fill="none" stroke="rgb(30 34 36/${i % 5 === 0 ? 0.26 : 0.15})" stroke-width="${i % 5 === 0 ? 1.8 : 1.2}"/>`;
+    };
+    const main = Array.from({ length: 16 }, (_, i) => ring(1640, 880, 50 + i * 44, i, 0)).join("");
+    const small = Array.from({ length: 8 }, (_, i) => ring(150, 1010, 40 + i * 40, i, 2)).join("");
+    return `${ashBase()}
+<svg class="abs" style="inset:0" width="1920" height="1080">${main}${small}
+  <text x="1360" y="660" font-family="Mono" font-size="15" fill="rgb(30 34 36/.4)" letter-spacing="2">240</text>
+  <text x="1500" y="760" font-family="Mono" font-size="15" fill="rgb(30 34 36/.4)" letter-spacing="2">460</text>
+  <text x="1690" y="958" font-family="Mono" font-size="15" fill="rgb(30 34 36/.55)" letter-spacing="3">▲ GTK · 449 M</text></svg>
+<div class="abs" style="left:1586px;top:812px;opacity:.85">${mark(80, "#2b3035", "#0d9488")}</div>
+${ashCards()}`;
+  })(),
+
+  // 19. Circuit: the mark set in a chip at the bottom right, its traces running out to the edges and
+  // ending in pads, a few lit in teal.
+  "19-circuit": (() => {
+    const cx = 1560, cy = 790, half = 150;
+    const traces = [];
+    const pads = [];
+    const R = rng(19);
+    // Pins along each side of the chip, each trace leaving straight then bending 45° to an edge.
+    for (let i = 0; i < 7; i++) {
+      const y = cy - half + 30 + i * 40;
+      const bend = (R() - 0.5) * 120;
+      traces.push(`M${cx + half} ${y} H${cx + half + 70 + i * 6} l${Math.abs(bend)} ${bend} H1960`);
+      const x = cx - half + 30 + i * 40;
+      const b2 = (R() - 0.5) * 120;
+      traces.push(`M${x} ${cy + half} V${cy + half + 40 + i * 4} l${b2} ${Math.abs(b2)} V1120`);
+    }
+    for (let i = 0; i < 6; i++) {
+      const y = cy - half + 40 + i * 44;
+      const len = 120 + R() * 220;
+      traces.push(`M${cx - half} ${y} H${cx - half - 50 - i * 8} l-${40 + i * 10} ${(i - 2.5) * 22} H${cx - half - 90 - len}`);
+      pads.push([cx - half - 90 - len, y + (i - 2.5) * 22, i % 3 === 0]);
+    }
+    for (let i = 0; i < 6; i++) {
+      const x = cx - half + 40 + i * 44;
+      const len = 80 + R() * 180;
+      traces.push(`M${x} ${cy - half} V${cy - half - 40 - i * 6} l${(i - 2.5) * 20} -${40 + i * 8} V${cy - half - 80 - len}`);
+      pads.push([x + (i - 2.5) * 20, cy - half - 80 - len, i % 4 === 1]);
+    }
+    return `${ashBase()}
+<svg class="abs" style="inset:0" width="1920" height="1080">
+  <g fill="none" stroke="rgb(30 34 36/.2)" stroke-width="3" stroke-linejoin="round">${traces.map((d) => `<path d="${d}"/>`).join("")}</g>
+  ${pads.map(([x, y, lit]) => `<circle cx="${x}" cy="${y}" r="8" fill="${lit ? "#2dd4bf" : "none"}" stroke="${lit ? "rgb(45 212 191/.9)" : "rgb(30 34 36/.25)"}" stroke-width="3" ${lit ? 'style="filter:drop-shadow(0 0 8px rgb(45 212 191/.8))"' : ""}/>`).join("")}
+  <rect x="${cx - half}" y="${cy - half}" width="${half * 2}" height="${half * 2}" rx="18" fill="rgb(52 57 60/.55)" stroke="rgb(255 255 255/.18)" stroke-width="2"/>
+  <rect x="${cx - half + 14}" y="${cy - half + 14}" width="${half * 2 - 28}" height="${half * 2 - 28}" rx="10" fill="none" stroke="rgb(255 255 255/.1)"/>
+</svg>
+<div class="abs" style="left:${cx - 92}px;top:${cy - 72}px;opacity:.9">${mark(140, "#e8ecec", "#2dd4bf")}</div>
+${ashCards()}`;
+  })(),
+
+  // 20. Isometric: an isometric drafting grid, with the mark extruded as a solid 3D block at the
+  // bottom right.
+  "20-isometric": (() => {
+    const lines = [];
+    const step = 44, k = Math.tan(Math.PI / 6);
+    for (let c = -1200; c < 3200; c += step) {
+      lines.push(`M${c} 0 L${c - 1080 / k} 1080`, `M${c} 0 L${c + 1080 / k} 1080`);
+    }
+    const depth = 16;
+    const layers = Array.from({ length: depth }, (_, i) => {
+      const d = depth - i;
+      return `<g transform="translate(${d * 2.6} ${d * 1.5})" fill="rgb(${58 + i * 2} ${62 + i * 2} ${64 + i * 2}/.55)">${MARK_PATHS.map((p) => `<path d="${p}"/>`).join("")}</g>`;
+    }).join("");
+    return `${ashBase()}
+<svg class="abs" style="inset:0;-webkit-mask-image:radial-gradient(ellipse 80% 80% at 75% 80%,#000 20%,rgb(0 0 0/.35) 70%)" width="1920" height="1080"><g stroke="rgb(30 34 36/.1)" stroke-width="1">${lines.map((d) => `<path d="${d}"/>`).join("")}</g></svg>
+<svg class="abs" style="left:1290px;top:600px" width="560" height="440" viewBox="0 0 520 400">
+  <g transform="translate(10 10)">${layers}
+    <g>${MARK_PATHS.slice(0, 2).map((p) => `<path d="${p}" fill="#d9dddd"/>`).join("")}${MARK_PATHS.slice(2).map((p) => `<path d="${p}" fill="#2dd4bf"/>`).join("")}</g>
+  </g>
+</svg>
+<div class="abs" style="left:1290px;top:1010px;width:560px;height:40px;border-radius:50%;background:rgb(20 22 24/.25);filter:blur(16px)"></div>
+${ashCards()}`;
+  })(),
+
+  // 21. Code ghost: a few lines of code sit faintly on the wall at either side, like a reflection
+  // on glass; the middle stays clear.
+  "21-code-ghost": `${ashBase()}
+<style>
+.code{font-family:Mono;font-size:23px;line-height:1.75;color:rgb(255 255 255/.32);white-space:pre;filter:blur(.6px)}
+.code .k{color:rgb(45 212 191/.6)}.code .s{color:rgb(255 236 210/.5)}.code .cm{color:rgb(30 34 36/.35)}
+</style>
+<div class="abs code" style="left:96px;top:330px"><span class="cm">// gustavtk.com</span>
+<span class="k">const</span> gustav = {
+  role: <span class="s">"full-stack developer"</span>,
+  stack: [<span class="s">"react"</span>, <span class="s">"node"</span>, <span class="s">"cloud"</span>],
+  available: <span class="k">true</span>,
+};</div>
+<div class="abs code" style="right:96px;top:360px;text-align:left"><span class="k">async function</span> ship(idea) {
+  <span class="k">const</span> app = <span class="k">await</span> build(idea);
+  <span class="k">await</span> deploy(app, <span class="s">"cloud"</span>);
+  <span class="k">return</span> <span class="s">"✓ live"</span>;
+}</div>
+<div class="abs" style="right:90px;bottom:70px;opacity:.16">${mark(260, "#1e2224", "#0d9488")}</div>
+${ashCards()}`,
+
+  // 22. Light beam: a shaft of warm lamp light falls across the wall from the top right, with dust
+  // in the air and the mark's shadow cast inside the beam.
+  "22-light-beam": (() => {
+    const R = rng(22);
+    const dust = Array.from({ length: 70 }, () => {
+      const t = R(), w = R();
+      const x = 1950 - t * 700 + (w - 0.5) * 320 * (0.4 + t);
+      const y = -20 + t * 1100 + (w - 0.5) * 80;
+      const r = 1 + R() * 2.6;
+      return `<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${r.toFixed(1)}" fill="rgb(255 246 230/${(0.25 + R() * 0.45).toFixed(2)})" ${r > 2.6 ? 'style="filter:blur(1.5px)"' : ""}/>`;
+    }).join("");
+    return `${ashBase()}
+<div class="abs" style="inset:0;filter:blur(34px)">
+  <svg width="1920" height="1080"><defs><linearGradient id="bm" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgb(255 236 205)" stop-opacity=".55"/><stop offset=".7" stop-color="rgb(255 236 205)" stop-opacity=".18"/><stop offset="1" stop-color="rgb(255 236 205)" stop-opacity="0"/></linearGradient></defs>
+  <polygon points="1760,-40 2060,-40 1560,1120 1120,1120" fill="url(#bm)"/></svg>
+</div>
+<div class="abs" style="left:1420px;top:660px;transform:skewX(-24deg) scaleY(.92);filter:blur(7px);opacity:.2">${mark(230, "#20242a", "#20242a")}</div>
+<svg class="abs" style="inset:0" width="1920" height="1080">${dust}</svg>
+${ashCards()}`;
+  })(),
+
+  // 23. Panels: a wall of wide architectural panels (seams kept to the sides) with soft wall-washer light, the mark debossed
+  // into the bottom-right panel.
+  "23-panels": `${ashBase()}
+${[300, 1620].map((x) => `<div class="abs" style="left:${x}px;top:0;bottom:0;width:3px;background:linear-gradient(90deg,rgb(30 34 36/.2) 0 2px,rgb(255 255 255/.22) 2px 3px)"></div>`).join("")}
+<div class="abs" style="left:1623px;right:0;top:812px;height:3px;background:linear-gradient(rgb(30 34 36/.18),rgb(255 255 255/.22))"></div>
+<div class="abs" style="left:150px;top:-60px;width:360px;height:620px;border-radius:50%;background:radial-gradient(closest-side,rgb(255 236 210/.32),transparent);filter:blur(10px)"></div>
+<div class="abs" style="left:1430px;top:-60px;width:360px;height:620px;border-radius:50%;background:radial-gradient(closest-side,rgb(255 236 210/.38),transparent);filter:blur(10px)"></div>
+<div class="abs" style="left:1500px;top:850px;filter:drop-shadow(-2px -2px 1px rgb(20 22 24/.35)) drop-shadow(2px 2px 1px rgb(255 255 255/.45))">${mark(170, "#8f9494", "#86a6a2")}</div>
+${ashCards()}`,
+
+  // 24. Halftone: a print-style dot screen fading in from the bottom-right corner, with the mark
+  // itself made of teal dots.
+  "24-halftone": `${ashBase()}
+<div class="abs" style="inset:0;background-image:radial-gradient(circle,rgb(30 34 36/.3) 3.2px,transparent 3.6px);background-size:20px 20px;-webkit-mask-image:radial-gradient(circle at 100% 100%,#000 0,rgb(0 0 0/.7) 320px,transparent 760px)"></div>
+<div class="abs" style="inset:0;background-image:radial-gradient(circle,rgb(30 34 36/.24) 2px,transparent 2.4px);background-size:20px 20px;-webkit-mask-image:radial-gradient(circle at 0% 100%,#000 0,transparent 420px)"></div>
+<div class="abs" style="left:1260px;top:540px;width:520px;height:400px;background-image:radial-gradient(circle,#0d9488 4.4px,transparent 5px);background-size:13px 13px;-webkit-mask:url('${markSvgData()}') center/contain no-repeat;opacity:.55"></div>
+${ashCards()}`,
+
+  // 25. Network: a constellation of linked nodes along the right edge and bottom, a few glowing
+  // teal, gathering around the mark.
+  "25-network": (() => {
+    const R = rng(25);
+    const nodes = [];
+    for (let i = 0; i < 46; i++) {
+      const side = R();
+      let x, y;
+      if (side < 0.62) { x = 1300 + R() * 640; y = 300 + R() * 800; }
+      else if (side < 0.85) { x = -20 + R() * 520; y = 640 + R() * 460; }
+      else { x = 500 + R() * 800; y = 960 + R() * 140; }
+      nodes.push([x, y, R() < 0.16]);
+    }
+    const links = [];
+    nodes.forEach(([x, y], i) => {
+      nodes.map(([x2, y2], j) => [Math.hypot(x - x2, y - y2), j]).filter(([d, j]) => j > i && d < 190).slice(0, 3)
+        .forEach(([d, j]) => links.push(`<line x1="${x.toFixed(0)}" y1="${y.toFixed(0)}" x2="${nodes[j][0].toFixed(0)}" y2="${nodes[j][1].toFixed(0)}" stroke="rgb(255 255 255/${(0.38 - d / 700).toFixed(2)})" stroke-width="1.4"/>`));
+    });
+    return `${ashBase()}
+<svg class="abs" style="inset:0" width="1920" height="1080">${links.join("")}
+  ${nodes.map(([x, y, lit]) => lit
+    ? `<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="6" fill="#5eead4" style="filter:drop-shadow(0 0 8px rgb(45 212 191/.9))"/>`
+    : `<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="4" fill="rgb(255 255 255/.55)"/>`).join("")}
+</svg>
+<div class="abs" style="left:1500px;top:700px;opacity:.75">${mark(150, "#e8ecec", "#2dd4bf")}</div>
+${ashCards()}`;
+  })(),
+
+  // 26. Glass layers: three frosted glass panes stacked in perspective at the bottom right, the
+  // mark on the front pane, a nod to working across the stack.
+  "26-glass-layers": `${ashBase()}
+<style>
+.stage{left:1180px;top:430px;width:640px;height:560px;perspective:1400px}
+.pane{position:absolute;width:380px;height:300px;border-radius:26px;background:linear-gradient(135deg,rgb(255 255 255/.34),rgb(255 255 255/.1));border:1.5px solid rgb(255 255 255/.55);box-shadow:0 30px 60px -30px rgb(20 22 26/.5),inset 0 1px 0 rgb(255 255 255/.6);backdrop-filter:blur(6px);transform:rotateY(-32deg) rotateX(12deg)}
+.pane small{position:absolute;left:24px;bottom:18px;font-family:Mono;font-size:14px;letter-spacing:.24em;color:rgb(30 34 36/.55)}
+</style>
+<div class="abs stage">
+  <div class="pane" style="left:200px;top:0;opacity:.7"><small>DB</small></div>
+  <div class="pane" style="left:110px;top:90px;opacity:.85"><small>API</small></div>
+  <div class="pane" style="left:20px;top:180px;display:flex;align-items:center;justify-content:center"><div style="opacity:.85">${mark(130, "#2b3035", "#0d9488")}</div><small>UI</small></div>
+</div>
+${ashCards()}`,
+
+  // 27. Flow lines: a ribbon of fine parallel curves sweeping in from the bottom left and rising
+  // to the right, like generative line art.
+  "27-flow-lines": (() => {
+    const lines = Array.from({ length: 40 }, (_, i) => {
+      const o = i * 9;
+      const a = (0.1 + 0.32 * Math.sin((i / 40) * Math.PI)).toFixed(2);
+      return `<path d="M-40 ${880 + o * 0.5} C 560 ${990 + o * 0.25}, 1120 ${700 + o * 0.35}, 1960 ${500 + o * 0.6}" fill="none" stroke="rgb(255 255 255/${a})" stroke-width="1.2"/>`;
+    }).join("");
+    const teal = `<path d="M-40 1040 C 560 1070, 1120 830, 1960 700" fill="none" stroke="rgb(45 212 191/.55)" stroke-width="2" style="filter:drop-shadow(0 0 6px rgb(45 212 191/.6))"/>`;
+    return `${ashBase()}
+<svg class="abs" style="inset:0" width="1920" height="1080">${lines}${teal}</svg>
+<div class="abs" style="right:100px;bottom:80px;opacity:.2">${mark(200, "#1e2224", "#0d9488")}</div>
+${ashCards()}`;
+  })(),
 };
 
 const browser = await chromium.launch({ executablePath: process.env.CHROME ?? "/opt/pw-browsers/chromium-1194/chrome-linux/chrome" });

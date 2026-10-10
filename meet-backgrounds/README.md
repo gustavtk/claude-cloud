@@ -24,6 +24,16 @@ Logo, name and role sit top left; email and website top right; the middle stays 
 | `15-blinds-light.png` | Minimal warm-ash wall with sun through blinds, plant left, framed mark on a sideboard |
 | `16-photo-office.png` | A generated photo of a grey home office (Higgsfield, Z Image): laptops removed, re-blurred, mark framed above the shelf |
 | `17-glass-ash.png` | The Glass layout in the photo office colours: ash-grey wall, cool window light left, warm lamp glow right, visible grid |
+| `18-topographic.png` | Ash series: contour lines rising to a summit at the bottom right, the mark as the survey marker |
+| `19-circuit.png` | Ash series: the mark set in a chip, circuit traces running to the edges, a few pads lit teal |
+| `20-isometric.png` | Ash series: an isometric drafting grid with the mark extruded as a solid 3D block |
+| `21-code-ghost.png` | Ash series: faint lines of code on the wall at either side, like a reflection on glass |
+| `22-light-beam.png` | Ash series: a shaft of warm lamp light with floating dust and the mark's shadow inside it |
+| `23-panels.png` | Ash series: wide architectural wall panels, wall-washer lights, the mark debossed in a panel |
+| `24-halftone.png` | Ash series: a print-style dot screen from the corners, the mark made of teal dots |
+| `25-network.png` | Ash series: a constellation of linked nodes around the mark, a few glowing teal |
+| `26-glass-layers.png` | Ash series: three frosted glass panes (UI, API, DB) stacked in perspective, the mark on the front |
+| `27-flow-lines.png` | Ash series: a ribbon of fine flowing lines sweeping across the bottom, one traced in teal |
 
 The room backgrounds (06, 11–16) keep the area behind your head a plain, mid-light wall so the
 edges of your hair and hands blend instead of glitching; every object sits at the edges. They
