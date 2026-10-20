@@ -1,33 +1,38 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Qualitative Research Quiz</title>
+<meta name="claude:viewport-fit-sides" content="cover">
 <style>
+  /* Single-column quiz: sticky score bar on top, question cards below, instant right/wrong feedback */
   :root {
     --bg: #f6f7f9; --card: #ffffff; --text: #1d2330; --muted: #5d6677; --line: #dde1e8;
     --accent: #3a5bd9; --good: #1e8e4e; --good-bg: #e3f5ea; --bad: #c4352b; --bad-bg: #fde9e7;
   }
   @media (prefers-color-scheme: dark) {
-    :root {
+    :root:not([data-theme="light"]) {
       --bg: #12151c; --card: #1b2029; --text: #e8ebf2; --muted: #98a1b3; --line: #2c3340;
       --accent: #7f9bff; --good: #52d28a; --good-bg: #16301f; --bad: #ff7b70; --bad-bg: #3a1c1a;
+      color-scheme: dark;
     }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12151c; --card: #1b2029; --text: #e8ebf2; --muted: #98a1b3; --line: #2c3340;
+    --accent: #7f9bff; --good: #52d28a; --good-bg: #16301f; --bad: #ff7b70; --bad-bg: #3a1c1a;
+    color-scheme: dark;
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-  header { position: sticky; top: 0; z-index: 5; background: var(--card); border-bottom: 1px solid var(--line); padding: 10px 16px; }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--card); }
+  header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--card); border-bottom: 1px solid var(--line); padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
   .bar { max-width: 760px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; }
   h1 { font-size: 1.05rem; margin: 0; }
   .stats { display: flex; gap: 14px; font-size: .9rem; color: var(--muted); }
   .stats b { color: var(--text); }
   .stats .ok b { color: var(--good); } .stats .no b { color: var(--bad); }
-  .progress { height: 4px; background: var(--line); margin-top: 8px; border-radius: 2px; overflow: hidden; max-width: 760px; margin-left: auto; margin-right: auto; }
+  .progress { height: 4px; background: var(--line); margin: 8px auto 0; border-radius: 2px; overflow: hidden; max-width: 760px; }
   .progress i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .2s; }
-  main { max-width: 760px; margin: 0 auto; padding: 16px; }
+  main { max-width: 760px; margin: 0 auto; padding-block: 16px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
   .tools { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
   button { font: inherit; cursor: pointer; }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .tool { background: var(--card); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; font-size: .9rem; }
   .tool.on { border-color: var(--accent); color: var(--accent); }
   .q { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 14px; }
@@ -41,11 +46,8 @@
   .opt.wrong { background: var(--bad-bg); border-color: var(--bad); }
   .msg { margin-top: 10px; font-size: .92rem; font-weight: 600; }
   .msg.good { color: var(--good); } .msg.bad { color: var(--bad); }
-  .hidden { display: none; }
   #done { text-align: center; padding: 20px; font-size: 1.1rem; }
 </style>
-</head>
-<body>
 <header>
   <div class="bar">
     <h1>Qualitative Research Quiz</h1>
@@ -65,10 +67,13 @@
     <button class="tool" id="reset">Reset all</button>
   </div>
   <div id="list"></div>
-  <div id="done" class="q hidden"></div>
+  <div id="done" class="q" hidden></div>
 </main>
 
 <script>
+(function () {
+const $ = id => document.getElementById(id);
+const sAns=$("sAns"),sTot=$("sTot"),sOk=$("sOk"),sNo=$("sNo"),bar=$("bar"),fUn=$("fUn"),fWr=$("fWr"),shuf=$("shuf"),reset=$("reset");
 // [question number, question, [options a-d], index of correct option]
 const DATA = [
 [1,"Which of the following is the primary purpose of qualitative research?",["To quantify variables","To explore and understand meanings","To test hypotheses","To generalize findings"],1],
@@ -169,7 +174,8 @@ const DATA = [
 [96,"Which of the following is a characteristic of “participatory action research” (PAR)?",["The researcher acts as an objective observer, detached from the participants","The research is conducted with the active participation of the community or group being studied","The study is focused on generating statistical data for policy decisions","The findings are meant to remain confidential and not shared with participants"],1],
 [97,"The concept of “transferability” in qualitative research is similar to which concept in quantitative research?",["Validity","Reliability","Generalizability","Statistical significance"],2],
 [98,"In qualitative research, what is the purpose of using “open coding”?",["To create a detailed coding framework before data collection","To break down qualitative data into discrete parts and label them with codes","To increase the sample size for better reliability","To perform statistical analysis on qualitative data"],1],
-[99,"Which of the following best describes the “constant comparative method” in grounded theory?",["Comparing the research findings with pre-existing theories","Continuously comparing data with emerging categories and concepts during analysis","Continuously comparing participants across different contexts","Randomly assigning participants to comparison groups"],1]
+[99,"Which of the following best describes the “constant comparative method” in grounded theory?",["Comparing the research findings with pre-existing theories","Continuously comparing data with emerging categories and concepts during analysis","Continuously comparing participants across different contexts","Randomly assigning participants to comparison groups"],1],
+[100,"Which of the following would be considered a limitation of qualitative research?",["The ability to explore in-depth understanding","The potential for researcher bias influencing participants’ perspectives","The focus on understanding participants’ experiences","The use of small, purposive samples"],3]
 ];
 
 const LS = "qr-quiz-v1";
@@ -177,7 +183,7 @@ const L = ["a","b","c","d"];
 let order = DATA.map(d => d[0]);
 let saved = {}; // question number -> chosen index
 let filter = "all";
-try { saved = JSON.parse(localStorage.getItem(LS) || "{}"); } catch (e) {}
+try { saved = JSON.parse(localStorage.getItem(LS) || "{}") || {}; } catch (e) {}
 function persist() { try { localStorage.setItem(LS, JSON.stringify(saved)); } catch (e) {} }
 const byNum = n => DATA.find(d => d[0] === n);
 
@@ -237,9 +243,9 @@ function stats() {
   bar.style.width = (ans / tot * 100) + "%";
   const done = document.getElementById("done");
   if (ans === tot) {
-    done.classList.remove("hidden");
+    done.hidden = false;
     done.textContent = "Finished! You scored " + ok + " / " + tot + " (" + Math.round(ok / tot * 100) + "%).";
-  } else done.classList.add("hidden");
+  } else done.hidden = true;
 }
 
 function setFilter(f) {
@@ -258,13 +264,18 @@ shuf.onclick = () => {
   }
   render();
 };
+let armed = false, armT;
 reset.onclick = () => {
-  if (!confirm("Clear all your answers and start over?")) return;
+  if (!armed) {
+    armed = true; reset.textContent = "Tap again to clear all answers";
+    armT = setTimeout(() => { armed = false; reset.textContent = "Reset all"; }, 3000);
+    return;
+  }
+  clearTimeout(armT); armed = false; reset.textContent = "Reset all";
   saved = {}; persist(); order = DATA.map(d => d[0]); filter = "all";
   fUn.classList.remove("on"); fWr.classList.remove("on");
   render(); window.scrollTo(0, 0);
 };
 render();
+})();
 </script>
-</body>
-</html>
