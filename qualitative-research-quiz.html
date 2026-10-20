@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qualitative Research Quiz</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --text: #1d2330; --muted: #5d6677; --line: #dde1e8;
+    --accent: #3a5bd9; --good: #1e8e4e; --good-bg: #e3f5ea; --bad: #c4352b; --bad-bg: #fde9e7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12151c; --card: #1b2029; --text: #e8ebf2; --muted: #98a1b3; --line: #2c3340;
+      --accent: #7f9bff; --good: #52d28a; --good-bg: #16301f; --bad: #ff7b70; --bad-bg: #3a1c1a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  header { position: sticky; top: 0; z-index: 5; background: var(--card); border-bottom: 1px solid var(--line); padding: 10px 16px; }
+  .bar { max-width: 760px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; }
+  h1 { font-size: 1.05rem; margin: 0; }
+  .stats { display: flex; gap: 14px; font-size: .9rem; color: var(--muted); }
+  .stats b { color: var(--text); }
+  .stats .ok b { color: var(--good); } .stats .no b { color: var(--bad); }
+  .progress { height: 4px; background: var(--line); margin-top: 8px; border-radius: 2px; overflow: hidden; max-width: 760px; margin-left: auto; margin-right: auto; }
+  .progress i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+  main { max-width: 760px; margin: 0 auto; padding: 16px; }
+  .tools { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  button { font: inherit; cursor: pointer; }
+  .tool { background: var(--card); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; font-size: .9rem; }
+  .tool.on { border-color: var(--accent); color: var(--accent); }
+  .q { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 14px; }
+  .q h2 { font-size: 1rem; margin: 0 0 10px; font-weight: 600; }
+  .q h2 span { color: var(--accent); margin-right: 6px; }
+  .opt { display: block; width: 100%; text-align: left; background: transparent; color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin-top: 8px; }
+  .opt:hover:not(:disabled) { border-color: var(--accent); }
+  .opt:disabled { cursor: default; }
+  .opt b { margin-right: 6px; color: var(--muted); }
+  .opt.correct { background: var(--good-bg); border-color: var(--good); }
+  .opt.wrong { background: var(--bad-bg); border-color: var(--bad); }
+  .msg { margin-top: 10px; font-size: .92rem; font-weight: 600; }
+  .msg.good { color: var(--good); } .msg.bad { color: var(--bad); }
+  .hidden { display: none; }
+  #done { text-align: center; padding: 20px; font-size: 1.1rem; }
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <h1>Qualitative Research Quiz</h1>
+    <div class="stats">
+      <span>Answered <b id="sAns">0</b>/<b id="sTot">0</b></span>
+      <span class="ok">Correct <b id="sOk">0</b></span>
+      <span class="no">Wrong <b id="sNo">0</b></span>
+    </div>
+  </div>
+  <div class="progress"><i id="bar"></i></div>
+</header>
+<main>
+  <div class="tools">
+    <button class="tool" id="fUn">Show unanswered only</button>
+    <button class="tool" id="fWr">Show wrong only</button>
+    <button class="tool" id="shuf">Shuffle questions</button>
+    <button class="tool" id="reset">Reset all</button>
+  </div>
+  <div id="list"></div>
+  <div id="done" class="q hidden"></div>
+</main>
+
+<script>
+// [question number, question, [options a-d], index of correct option]
+const DATA = [
+[1,"Which of the following is the primary purpose of qualitative research?",["To quantify variables","To explore and understand meanings","To test hypotheses","To generalize findings"],1],
+[2,"In qualitative research, data collection typically involves which of the following methods?",["Surveys and questionnaires","Randomized controlled trials","Interviews and focus groups","Laboratory experiments"],2],
+[3,"The concept of “saturation” in qualitative research refers to:",["The point at which the sample size is sufficient","The moment when data collection can stop because no new information is being discovered","The level of statistical significance in the data","The total number of themes identified in the data"],1],
+[4,"Which of the following best describes a common characteristic of qualitative research?",["Highly structured research designs","Flexible and emergent research design","Dependence on large sample sizes","Reliance on numerical data"],1],
+[5,"What is a key difference between qualitative and quantitative research?",["Qualitative research focuses on cause-and-effect relationships, while quantitative research does not","Qualitative research seeks to understand how people make sense of the world, whereas quantitative research seeks to quantify variables","Qualitative research always requires a hypothesis, whereas quantitative research does not","Qualitative research uses numerical data, whereas quantitative research uses narrative data"],1],
+[6,"Which of the following is a common data analysis method in qualitative research?",["Descriptive statistics","Content analysis","Regression analysis","Meta-analysis"],1],
+[7,"In qualitative research, the term “bracketing” refers to:",["Grouping participants based on similar characteristics","The process of setting aside the researcher’s preconceptions","The act of combining different data sources","Using statistical methods to interpret data"],1],
+[8,"Which of the following is often used to ensure credibility in qualitative research?",["Random sampling","Triangulation","Double-blind procedures","P-value calculations"],1],
+[9,"Phenomenology as a qualitative research method is primarily concerned with:",["The statistical relationship between variables","The lived experiences of individuals","The economic impact of decisions","The biological basis of behavior"],1],
+[10,"A qualitative researcher is most likely to ask which of the following types of questions?",["How many people experience anxiety in a given population?","What is the prevalence of diabetes in the elderly?","How do patients describe their experiences of chronic pain?","What is the effect of medication on blood pressure?"],2],
+[11,"In qualitative research, which of the following best describes “thick description”?",["A superficial summary of findings","A detailed and nuanced account of a research setting or phenomenon","A mathematical model to explain data","The extensive use of numerical data"],1],
+[12,"What is the primary goal of grounded theory in qualitative research?",["To describe the lived experiences of participants","To generate a theory that emerges from the data","To confirm existing theories","To predict outcomes in similar situations"],1],
+[13,"In qualitative research, what is the role of the researcher during data collection?",["To remain completely detached from the participants","To manipulate variables to observe effects","To interact with participants and co-construct meaning","To ensure all data is quantifiable"],2],
+[14,"Which of the following is a key characteristic of ethnographic research?",["The use of laboratory experiments to control variables","The immersion of the researcher in the culture being studied","The application of statistical analysis to social phenomena","The focus on predicting behavior through hypothesis testing"],1],
+[15,"Reflexivity in qualitative research refers to:",["The process of reflecting on the literature review","The researcher’s awareness and consideration of their own influence on the research","The analysis of reflexive actions in the participants","The replication of study findings across different settings"],1],
+[16,"The use of “member checking” in qualitative research is primarily for:",["Confirming the statistical significance of findings","Ensuring the accuracy and credibility of the data by involving participants in the validation process","Randomizing the selection of participants","Increasing the generalizability of the results"],1],
+[17,"In a qualitative study, a researcher is most likely to achieve transferability by:",["Generalizing the findings to a broader population","Providing a detailed account of the research context and participants","Using random sampling techniques","Conducting a meta-analysis"],1],
+[18,"Which qualitative research method is most appropriate for exploring the processes individuals use to make decisions?",["Ethnography","Narrative inquiry","Case study","Grounded theory"],3],
+[19,"In qualitative research, “triangulation” is used to:",["Increase the sample size for better statistical power","Ensure that the study is ethically sound","Cross-validate findings by using multiple data sources, methods, or investigators","Apply advanced statistical techniques to qualitative data"],2],
+[20,"Which of the following is a potential limitation of qualitative research?",["It is always time-efficient and inexpensive","It requires large sample sizes to be valid","Its findings may not be generalizable to a larger population","It cannot explore complex phenomena"],2],
+[21,"The purpose of a literature review in qualitative research is to:",["Test hypotheses developed from the literature","Develop a theoretical framework and identify gaps in knowledge","Collect primary data from participants","Summarize quantitative data"],1],
+[22,"In qualitative research, a “case study” is best defined as:",["An in-depth examination of a single instance or event","A comparative analysis of multiple cases","A quantitative analysis of variables in a population","A systematic review of the literature"],0],
+[23,"Which of the following approaches is commonly used to analyze qualitative data?",["Thematic analysis","ANOVA (Analysis of Variance)","Logistic regression","Meta-regression"],0],
+[24,"The primary concern of qualitative research ethics is to:",["Ensure that the sample size is large enough for statistical analysis","Protect the rights, dignity, and confidentiality of participants","Maximize the generalizability of the findings","Reduce the cost and duration of the research"],1],
+[25,"Which of the following best describes “purposive sampling” in qualitative research?",["Randomly selecting participants from a population","Selecting participants based on specific characteristics or criteria relevant to the research question","Using statistical software to select a representative sample","Selecting participants who are easily accessible"],1],
+[26,"In qualitative research, the credibility of the findings can be enhanced by:",["Increasing the sample size","Using standardized tests","Employing methods such as triangulation and member checking","Conducting randomized controlled trials"],2],
+[27,"The term “emic” perspective in qualitative research refers to:",["An outsider’s view of the culture being studied","An insider’s view and understanding of the culture or phenomenon being studied","The application of statistical analysis to qualitative data","The development of a new theoretical model"],1],
+[28,"Which qualitative research method is particularly useful for exploring the life stories and personal experiences of individuals?",["Grounded theory","Ethnography","Narrative inquiry","Case study"],2],
+[29,"Which of the following is NOT typically a characteristic of qualitative research?",["Flexibility in research design","Use of open-ended questions","Statistical hypothesis testing","In-depth exploration of complex phenomena"],2],
+[30,"What is the role of coding in qualitative data analysis?",["To convert qualitative data into numerical values for statistical analysis","To categorize and organize data into meaningful units","To develop hypotheses for testing","To ensure that data is collected randomly"],1],
+[31,"When a researcher uses a “hermeneutic approach” in qualitative research, they are primarily focused on:",["Quantifying participants’ responses","Interpreting and understanding the meanings of participants’ experiences","Conducting controlled experiments","Testing existing theories"],1],
+[32,"In qualitative research, which of the following is most likely to be used to ensure the reliability of the data?",["Cronbach’s alpha","Inter-coder reliability","Chi-square test","ANOVA"],1],
+[33,"The process of “data immersion” in qualitative research involves:",["Immersing data in a controlled environment for analysis","The researcher’s deep engagement with the data to fully understand its context and meaning","Applying statistical tests to qualitative data","Repeatedly administering the same survey to participants"],1],
+[34,"In qualitative research, a “focus group” is best described as:",["A one-on-one interview with a key informant","A group discussion guided by a facilitator to explore participants’ perspectives on a specific topic","A survey administered to a large group of participants","An experiment involving multiple groups of participants"],1],
+[35,"In qualitative research, the concept of “dependability” is most closely related to:",["The statistical significance of the findings","The consistency and stability of the research process over time","The generalizability of the results","The size of the sample"],1],
+[36,"Which of the following is NOT a typical step in qualitative data analysis?",["Data coding","Hypothesis testing","Theme identification","Data interpretation"],1],
+[37,"A qualitative researcher is likely to use an “interpretive framework” to:",["Test causal relationships between variables","Guide the analysis of data by providing a theoretical lens","Ensure random selection of participants","Quantify the findings of the study"],1],
+[38,"The concept of “credibility” in qualitative research is most analogous to which of the following concepts in quantitative research?",["Reliability","Validity","Generalizability","Statistical power"],1],
+[39,"Which of the following best describes “participant observation” in qualitative research?",["Observing participants from a distance without interaction","The researcher actively engages in the environment being studied while observing participants","Using surveys to gather data from participants","Analyzing archival data about the participants"],1],
+[40,"In qualitative research, “field notes” are typically used for:",["Recording numerical data from experiments","Documenting the researcher’s observations, reflections, and interactions during the study","Conducting statistical analysis","Writing the final report"],1],
+[41,"A qualitative study exploring how individuals experience chronic illness is most likely to use which method?",["Phenomenology","Case-control study","Randomized controlled trial","Cross-sectional survey"],0],
+[42,"The term “negative case analysis” in qualitative research refers to:",["Analyzing and excluding outliers from the data","Identifying cases that do not fit the emerging patterns or themes","Combining qualitative and quantitative results","Increasing the sample size with additional participants"],1],
+[43,"In qualitative research, what is the significance of “contextualization”?",["Testing the null hypothesis with quantitative data","Understanding that data is interpreted within the specific context in which it was collected","Applying statistical controls to eliminate contextual effects","Generalizing findings across different contexts"],1],
+[44,"Which of the following best describes the “snowball sampling” technique?",["A random sampling method used to ensure generalizability","A method where existing study participants recruit future participants from among their acquaintances","A technique used to increase the sample size for statistical power","A method for sampling difficult-to-reach populations using geographic clusters"],1],
+[45,"What is the primary purpose of using “memo writing” in grounded theory research?",["To develop hypotheses for future testing","To document the researcher’s thoughts, insights, and decisions throughout the research process","To record participants’ demographic information","To perform statistical analysis of qualitative data"],1],
+[46,"In qualitative research, the concept of “richness” in data refers to:",["The large volume of data collected","The depth and detail of information collected","The use of advanced statistical methods","The high cost of the research process"],1],
+[47,"What is the main reason for using “open-ended questions” in qualitative interviews?",["To limit participants’ responses to specific choices","To encourage quick and easy data analysis statistically","To facilitate quick, statistically analyzable responses","To allow participants to provide detailed and nuanced answers"],3],
+[48,"A key difference between qualitative and quantitative research is:",["Qualitative research focuses on textual data, while quantitative research focuses on numerical data","Qualitative research tests hypotheses and measures variables, while quantitative research seeks to understand meanings and experiences","Qualitative research uses controlled experiments, while quantitative research uses narrative methods","Qualitative research always uses large samples, while quantitative research uses small samples"],0],
+[49,"Which of the following is an example of a “coding framework” in qualitative research?",["A set of predetermined categories used to classify data","A statistical model for data analysis","A literature review used to support the research findings","A survey instrument for collecting data"],0],
+[50,"Which of the following would be considered a limitation of using interviews in qualitative research?",["Interviews allow for in-depth exploration of participants’ experiences","Interviews can be time-consuming and resource-intensive","Interviews provide opportunities for building rapport with participants","Interviews yield detailed, context-rich data"],1],
+[51,"Which of the following is an important consideration when conducting qualitative research with vulnerable populations?",["Ensuring that the sample is representative of the general population","Prioritizing the protection of participants’ rights and well-being","Maximizing the generalizability of the findings","Minimizing the sample size to reduce potential harm"],1],
+[52,"Which of the following is most likely to enhance the “trustworthiness” of a qualitative study?",["Using random sampling techniques","Employing triangulation and prolonged engagement","Ensuring the study has a large sample size","Applying complex statistical methods to the data"],1],
+[53,"In qualitative research, the “audit trail” refers to:",["A record of the statistical analyses conducted","Documentation of the research process, including data collection, analysis, and decisions made","A list of all participants in the study","A summary of the literature review"],1],
+[54,"Which of the following strategies is used in qualitative research to address “researcher bias”?",["Increasing the sample size","Using random assignment","Reflexivity and peer debriefing","Applying statistical controls"],2],
+[55,"What is a key advantage of using “document analysis” in qualitative research?",["It provides real-time data from participants","It allows for the analysis of historical and contextual information that might not be accessible through other methods","It ensures that data is collected randomly","It requires minimal ethical considerations"],1],
+[56,"Which of the following is NOT a characteristic of qualitative research?",["Focus on context and meaning","Use of open-ended questions","Statistical testing of hypotheses","Exploration of complex phenomena"],2],
+[57,"In qualitative research, “thick description” contributes to:",["The ability to generalize findings to a larger population","The detailed and nuanced understanding of the research context and participants’ experiences","The reduction of research costs","The application of statistical controls"],1],
+[58,"Which of the following methods is most appropriate for understanding the cultural practices of a specific community?",["Randomized controlled trial","Ethnography","Cross-sectional survey","Case-control study"],1],
+[59,"The “transferability” of qualitative research findings refers to:",["The ability to replicate the study in different contexts","The extent to which findings can be applied or transferred to other contexts or settings","The statistical significance of the results","The generalizability of the findings to a larger population"],1],
+[60,"Which of the following is an example of a “life history” method in qualitative research?",["Interviewing participants about their daily routines","Collecting data through observation over a single day","Exploring the entire life story of an individual to understand their experiences","Analyzing statistical data from a longitudinal study"],2],
+[61,"What is the primary purpose of using “axial coding” in grounded theory research?",["To randomly assign codes to data","To identify and establish relationships between categories","To increase the sample size for greater validity","To perform statistical analysis of qualitative data"],1],
+[62,"In qualitative research, a “gatekeeper” is best described as:",["A person who controls access to the research site or participants","A participant who provides the majority of data","A statistical tool used to analyze research findings","An external reviewer of the research findings"],0],
+[63,"Which of the following is most likely to be a challenge when using “participant observation” in qualitative research?",["The inability to collect detailed data","The difficulty in maintaining objectivity while actively participating in the environment","The ease of analyzing the data","The requirement of large sample sizes"],1],
+[64,"Which of the following would be considered an ethical consideration in qualitative research?",["Using open-ended questions","Ensuring informed consent from all participants","Applying statistical tests to the data","Increasing the sample size for greater validity"],1],
+[65,"In qualitative research, “prolonged engagement” refers to:",["Extending the length of the data collection process to ensure in-depth understanding","Increasing the number of participants to enhance the study’s validity","Repeating the same questions to confirm participants’ responses","Applying complex statistical methods to the data"],0],
+[66,"Which of the following is NOT typically a focus of qualitative research?",["Understanding participants’ perspectives and experiences","Exploring the meanings and contexts of social phenomena","Testing and quantifying hypotheses","Developing theories based on data"],2],
+[67,"A “semi-structured interview” in qualitative research is best described as:",["An interview with strictly predetermined questions and no room for deviation","An interview with a flexible guide that allows for probing and follow-up questions","An interview conducted with a large group of participants simultaneously","An interview conducted entirely via written surveys"],1],
+[68,"In qualitative research, the term “saturation” refers to:",["The use of a large sample size to ensure accuracy of the findings","The statistical significance of coding data into categories","The point at which additional data no longer contributes new information or insights","The process of reflecting on the researcher’s own influence"],2],
+[69,"The term “reflexivity” in qualitative research refers to:",["The researcher’s awareness of their own influence on the research process and findings","The statistical testing of hypotheses","The replication of the study in different contexts","The random assignment of participants to groups"],0],
+[70,"A qualitative researcher interested in understanding the daily lives and routines of people living in a particular community would most likely use:",["Cross-sectional survey","Ethnography","Case-control study","Randomized controlled trial"],1],
+[71,"Which of the following best describes the concept of “emic” perspective in qualitative research?",["A researcher’s interpretation of the data","An outsider’s view on the research topic","The participants’ own perspective and interpretations","The use of statistical methods to analyze data"],2],
+[72,"What is the primary purpose of using “focus groups” in qualitative research?",["To collect large amounts of numerical data","To explore group dynamics and collective views","To ensure random sampling of participants","To perform statistical hypothesis testing"],1],
+[73,"Which of the following is NOT a typical feature of a “case study” in qualitative research?",["In-depth exploration of a complex issue in its real-life context","Focus on data from a large, random sample","Collection of multiple sources of evidence","Study of a bounded system such as an individual, group, or organization"],1],
+[74,"The process of “member checking” in qualitative research involves:",["The researcher verifying and validating the research findings with participants","The researcher selecting participants for data collection","Randomly selecting participants for data collection","The use of control groups to ensure accuracy"],0],
+[75,"Which of the following qualitative research methods is most suitable for exploring participants’ life stories?",["Ethnography","Grounded theory","Phenomenology","Narrative inquiry"],3],
+[76,"In qualitative research, “dependability” refers to:",["The consistency and reliability of the research findings over time","The generalizability of the findings to other populations","The ethical considerations of the study","The numerical accuracy of the data collected"],0],
+[77,"What is the main purpose of “triangulation” in qualitative research?",["To increase the statistical power of the study","To verify findings by using multiple methods or sources","To select a random sample","To perform statistical analyses"],1],
+[78,"Which of the following is an example of a “phenomenological” approach in qualitative research?",["Studying the lived experiences of individuals who have undergone a specific phenomenon","Conducting a large-scale survey on health behaviors","Analyzing the economic impact of a public policy","Testing a new educational intervention in a controlled setting"],0],
+[79,"Which qualitative research method is most appropriate for studying the language and communication patterns within a community?",["Ethnography","Grounded theory","Discourse analysis","Phenomenology"],2],
+[80,"Which of the following is NOT a common data collection method in qualitative research?",["Interviews","Surveys with closed-ended questions","Observations","Focus groups"],1],
+[81,"Which of the following best describes “grounded theory”?",["A theory developed and tested in a controlled experiment","A theory derived inductively from the data collected during the research process","A theory that is pre-existing and used to guide data collection","A theory based on the statistical analysis of numerical data"],1],
+[82,"What is the primary purpose of using “field notes” in qualitative research?",["To record numerical data for statistical analysis","To document the researcher’s observations, thoughts, and reflections during data collection","To summarize the results of the study","To create a coding framework"],1],
+[83,"In qualitative research, “analytic memoing” refers to:",["Writing statistical summaries of the data","Recording and reflecting on the coding process and emerging themes","Creating a structured interview guide","Conducting a literature review"],1],
+[84,"Which of the following best describes the role of “theoretical sampling” in grounded theory?",["Selecting participants randomly to increase generalizability","Selecting participants based on emerging theoretical concepts to further develop theory","Ensuring an equal representation of all demographic groups","Using a predetermined sample size for statistical analysis"],1],
+[85,"What is the purpose of conducting a “pilot study” in qualitative research?",["To test the feasibility of the research design and methods before the main study","To collect a large sample for statistical testing","To finalize the coding framework","To perform the final analysis of the data"],0],
+[86,"In qualitative research, “epistemology” refers to:",["The study of statistical methods","The philosophical study of knowledge, including its nature and origins","The coding of qualitative data","The practical application of research findings"],1],
+[87,"Which of the following is an example of “purposive sampling” in qualitative research?",["Randomly selecting participants from a large population","Selecting participants who are most knowledgeable about the research topic","Ensuring an equal distribution of participants across demographic groups","Using statistical methods to select participants"],1],
+[88,"What does the term “contextualization” mean in qualitative research?",["Analyzing data without considering the context in which it was collected","Understanding and interpreting data within the context in which it was collected","Using context-free variables in data analysis","Randomly assigning participants to different contexts"],1],
+[89,"Which of the following best describes the concept of “thick description” in qualitative research?",["Providing a detailed and rich account of the research context and participants’ experiences","Reporting only the numerical results of a study","Using statistical tests to analyze qualitative data","Summarizing the key findings in a brief manner"],0],
+[90,"Which of the following is a potential disadvantage of using interviews in qualitative research?",["The ability to gather in-depth information","The possibility of interviewer bias influencing participants’ responses","The flexibility to explore new topics","The opportunity to clarify questions for participants"],1],
+[91,"In qualitative research, “axial coding” refers to:",["The initial process of breaking down data into discrete parts","The process of reassembling data after open coding to identify relationships between categories","The final stage of coding where themes are developed","The use of statistical software to code data"],1],
+[92,"Which of the following is a key characteristic of “phenomenology” as a qualitative research approach?",["It aims to generate a new theory based on data","It focuses on understanding the essence of lived experiences","It involves the analysis of language and communication","It relies on numerical data to draw conclusions"],1],
+[93,"What is the primary goal of “coding” in qualitative data analysis?",["To reduce the data into numerical form for statistical analysis","To organize and categorize data to identify patterns and themes","To increase the sample size of the study","To apply experimental controls to the study"],1],
+[94,"Which of the following is an example of “negative case analysis” in qualitative research?",["Selecting only cases that support the findings","Using a statistical test to confirm reliability","Conducting the analysis with a larger sample size","Examining cases that do not fit the emerging pattern or theory"],3],
+[95,"In qualitative research, the term “hermeneutics” is associated with:",["The interpretation of texts, meaning, and understanding","The measurement of participants’ behavior","The random selection of participants","The use of control groups in experiments"],0],
+[96,"Which of the following is a characteristic of “participatory action research” (PAR)?",["The researcher acts as an objective observer, detached from the participants","The research is conducted with the active participation of the community or group being studied","The study is focused on generating statistical data for policy decisions","The findings are meant to remain confidential and not shared with participants"],1],
+[97,"The concept of “transferability” in qualitative research is similar to which concept in quantitative research?",["Validity","Reliability","Generalizability","Statistical significance"],2],
+[98,"In qualitative research, what is the purpose of using “open coding”?",["To create a detailed coding framework before data collection","To break down qualitative data into discrete parts and label them with codes","To increase the sample size for better reliability","To perform statistical analysis on qualitative data"],1],
+[99,"Which of the following best describes the “constant comparative method” in grounded theory?",["Comparing the research findings with pre-existing theories","Continuously comparing data with emerging categories and concepts during analysis","Continuously comparing participants across different contexts","Randomly assigning participants to comparison groups"],1]
+];
+
+const LS = "qr-quiz-v1";
+const L = ["a","b","c","d"];
+let order = DATA.map(d => d[0]);
+let saved = {}; // question number -> chosen index
+let filter = "all";
+try { saved = JSON.parse(localStorage.getItem(LS) || "{}"); } catch (e) {}
+function persist() { try { localStorage.setItem(LS, JSON.stringify(saved)); } catch (e) {} }
+const byNum = n => DATA.find(d => d[0] === n);
+
+const list = document.getElementById("list");
+
+function render() {
+  list.innerHTML = "";
+  order.forEach(n => {
+    const [num, text, opts, ans] = byNum(n);
+    const chosen = saved[num];
+    const answered = chosen !== undefined;
+    if (filter === "unanswered" && answered) return;
+    if (filter === "wrong" && !(answered && chosen !== ans)) return;
+
+    const card = document.createElement("div");
+    card.className = "q";
+    const h = document.createElement("h2");
+    h.innerHTML = "<span>" + num + ".</span>";
+    h.appendChild(document.createTextNode(text));
+    card.appendChild(h);
+
+    opts.forEach((o, i) => {
+      const b = document.createElement("button");
+      b.className = "opt";
+      b.innerHTML = "<b>" + L[i] + ")</b>";
+      b.appendChild(document.createTextNode(o));
+      if (answered) {
+        b.disabled = true;
+        if (i === ans) b.classList.add("correct");
+        else if (i === chosen) b.classList.add("wrong");
+      } else {
+        b.onclick = () => { saved[num] = i; persist(); render(); };
+      }
+      card.appendChild(b);
+    });
+
+    if (answered) {
+      const m = document.createElement("div");
+      if (chosen === ans) { m.className = "msg good"; m.textContent = "✓ Correct!"; }
+      else { m.className = "msg bad"; m.textContent = "✗ Wrong. The correct answer is " + L[ans] + ") " + opts[ans]; }
+      card.appendChild(m);
+    }
+    list.appendChild(card);
+  });
+  stats();
+}
+
+function stats() {
+  let ok = 0, no = 0;
+  DATA.forEach(d => {
+    const c = saved[d[0]];
+    if (c === undefined) return;
+    c === d[3] ? ok++ : no++;
+  });
+  const ans = ok + no, tot = DATA.length;
+  sAns.textContent = ans; sTot.textContent = tot; sOk.textContent = ok; sNo.textContent = no;
+  bar.style.width = (ans / tot * 100) + "%";
+  const done = document.getElementById("done");
+  if (ans === tot) {
+    done.classList.remove("hidden");
+    done.textContent = "Finished! You scored " + ok + " / " + tot + " (" + Math.round(ok / tot * 100) + "%).";
+  } else done.classList.add("hidden");
+}
+
+function setFilter(f) {
+  filter = filter === f ? "all" : f;
+  fUn.classList.toggle("on", filter === "unanswered");
+  fWr.classList.toggle("on", filter === "wrong");
+  render();
+}
+fUn.onclick = () => setFilter("unanswered");
+fWr.onclick = () => setFilter("wrong");
+shuf.onclick = () => {
+  order = order.slice();
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  render();
+};
+reset.onclick = () => {
+  if (!confirm("Clear all your answers and start over?")) return;
+  saved = {}; persist(); order = DATA.map(d => d[0]); filter = "all";
+  fUn.classList.remove("on"); fWr.classList.remove("on");
+  render(); window.scrollTo(0, 0);
+};
+render();
+</script>
+</body>
+</html>
